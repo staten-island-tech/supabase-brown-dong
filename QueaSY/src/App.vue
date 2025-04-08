@@ -5,7 +5,7 @@ import { RouterLink, RouterView } from "vue-router";
 <template>
   <header>
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld msg="Your fish tank" />
       <nav>
         <RouterLink to="/">Homliasdfbhjik;e</RouterLink>
         <RouterLink to="/about">About</RouterLink>
