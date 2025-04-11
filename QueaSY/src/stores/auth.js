@@ -8,7 +8,7 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     login(username, password) {
       // Placeholder credentials
-      const dummyUser = { username: "fishfan", password: "bubbles123" };
+      const dummyUser = { username: "bob", password: "fish" };
 
       if (username === dummyUser.username && password === dummyUser.password) {
         this.user = { username: dummyUser.username };
