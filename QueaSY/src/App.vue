@@ -2,7 +2,7 @@
 import { RouterLink, RouterView } from "vue-router";
 </script>
 
-<template>
+<template class="bg-blue-400">
   <header>
     <div class="wrapper">
       <HelloWorld msg="Your fish tank" />
