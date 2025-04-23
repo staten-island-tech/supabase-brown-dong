@@ -1,23 +1,32 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "@/stores/auth.js";
-import HomeView from "../views/HomeView.vue";
+import HomeView from "@/views/HomeView.vue";
+import FishTank from "@/views/FishTank.vue";
+import StorePage from "@/views/StorePage.vue";
+import SocialPage from "@/views/SocialPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: "/", component: HomeView },
-    // { path: "/explore", component: ExploreTanks },
-    { path: "/login", component: () => import("../views/LoginView.vue") },
-    // {
-    //   path: "/my-tank",
-    //   component: MyTankView,
-    //   meta: { requiresAuth: true },
-    // },
-    // {
-    //   path: "/shop",
-    //   component: ShopView,
-    //   meta: { requiresAuth: true },
-    // },
+    { path: "/",
+      name: "Home Page",
+      component: HomeView,
+    }
+    {
+      path: "/tank",
+      name: "Fish Tank",
+      component: FishTank,
+    },
+    {
+      path: "/store",
+      name: "Store",
+      component: StorePage,
+    },
+    {
+      path: "/social",
+      name: "Social",
+      component: SocialPage,
+    },
   ],
 });
 
