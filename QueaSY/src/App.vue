@@ -8,7 +8,7 @@ import { RouterLink, RouterView } from "vue-router";
       <HelloWorld msg="Your fish tank" />
       <nav>
         <RouterLink to="/">Homliasdfbhjik;e</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/login">LOGIN!!!!!!!!!!!!!!!!</RouterLink>
       </nav>
       <h1 class="text-7xl font-bold underline">Hello world!</h1>
     </div>
