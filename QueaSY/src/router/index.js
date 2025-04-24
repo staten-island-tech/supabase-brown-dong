@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "@/stores/auth.js";
-import HomeView from "@/views/HomeView.vue";
+import HomePage from "@/views/HomePage.vue";
 import FishTank from "@/views/FishTank.vue";
 import StorePage from "@/views/StorePage.vue";
 import SocialPage from "@/views/SocialPage.vue";
@@ -8,10 +8,7 @@ import SocialPage from "@/views/SocialPage.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: "/",
-      name: "Home Page",
-      component: HomeView,
-    }
+    { path: "/", name: "Home Page", component: HomePage },
     {
       path: "/tank",
       name: "Fish Tank",
