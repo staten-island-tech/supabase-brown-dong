@@ -7,7 +7,6 @@ const router = createRouter({
   routes: [
     { path: "/", component: HomeView },
     // { path: "/explore", component: ExploreTanks },
-    { path: "/login", component: () => import("../views/LoginView.vue") },
     // {
     //   path: "/my-tank",
     //   component: MyTankView,
@@ -23,12 +22,12 @@ const router = createRouter({
 
 export default router;
 
-router.beforeEach((to, from, next) => {
-  const auth = useAuthStore();
+// router.beforeEach((to, from, next) => {
+//   const auth = useAuthStore();
 
-  if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    next("/login");
-  } else {
-    next();
-  }
-});
+//   if (to.meta.requiresAuth && !auth.isAuthenticated) {
+//     next("/login");
+//   } else {
+//     next();
+//   }
+// });
