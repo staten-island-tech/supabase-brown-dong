@@ -25,7 +25,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth.js";
 import { useRouter } from "vue-router";
@@ -34,6 +34,7 @@ import { storeToRefs } from "pinia";
 const email = ref("");
 const password = ref("");
 const auth = useAuthStore();
+const { user, error } = storeToRefs(auth);
 const router = useRouter();
 
 async function handleSignup() {
@@ -41,7 +42,6 @@ async function handleSignup() {
 
   if (auth.user) {
     console.log("Signup success!", auth.user);
-    router.push("/"); // or your protected home page
   } else {
     console.error("Signup failed:", auth.error);
   }
