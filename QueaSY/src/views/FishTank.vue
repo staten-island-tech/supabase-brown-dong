@@ -38,7 +38,7 @@
 
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import { fishList } from "@/fishList.js";
 
 const result = ref(null);
