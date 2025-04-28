@@ -59,6 +59,10 @@ function cashout() {
   endMessage.value = `You cashed out with a score of ${score.value}!`;
   let coinValue = score.value * 10;
   let moneyAmount = parseInt(localStorage.getItem("coins"));
+  console.log(moneyAmount);
+  if (Number.isNaN(moneyAmount)) {
+    moneyAmount = 0;
+  }
   let newAmount = moneyAmount + coinValue;
   localStorage.setItem("coins", newAmount);
 }

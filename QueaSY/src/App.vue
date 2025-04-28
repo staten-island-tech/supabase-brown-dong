@@ -1,6 +1,10 @@
 <script setup>
+import { ref } from "vue";
 import { RouterLink, RouterView } from "vue-router";
-const savedCoins = localStorage.getItem("coins");
+let savedCoins = ref(parseInt(localStorage.getItem("coins")));
+if (Number.isNaN(savedCoins.value)) {
+  savedCoins = 0;
+}
 </script>
 
 <template class="bg-blue-400">
