@@ -75,9 +75,10 @@ function rollGacha(list) {
         break;
       }
     }
-  }
-  if (selectedItem) {
-    rolledItems.push(selectedItem);
+
+    if (selectedItem) {
+      rolledItems.push(selectedItem);
+    }
   }
 }
 
