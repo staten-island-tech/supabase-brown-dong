@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
+const savedCoins = localStorage.getItem("coins");
 </script>
 
 <template class="bg-blue-400">
@@ -15,6 +16,9 @@ import { RouterLink, RouterView } from "vue-router";
     </div>
     <div class="fixed right-0 top-1/2 -translate-y-1/2">
       <RouterLink to="/social">SOCIAL</RouterLink>
+    </div>
+    <div class="fixed right-0 top-0">
+      <p>{{ savedCoins }}</p>
     </div>
     <RouterView />
   </div>
