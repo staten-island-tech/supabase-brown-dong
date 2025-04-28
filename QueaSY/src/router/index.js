@@ -4,6 +4,7 @@ import HomePage from "@/views/HomePage.vue";
 import FishTank from "@/views/FishTank.vue";
 import StorePage from "@/views/StorePage.vue";
 import SocialPage from "@/views/SocialPage.vue";
+import HigherLower from "@/views/HigherLower.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,11 @@ const router = createRouter({
       path: "/social",
       name: "Social",
       component: SocialPage,
+    },
+    {
+      path: "/HL",
+      name: "HLGame",
+      component: HigherLower,
     },
   ],
 });
