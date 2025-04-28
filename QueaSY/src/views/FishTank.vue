@@ -59,22 +59,26 @@ const result = ref(null);
 const rolledItems = reactive([]);
 
 function rollGacha(list) {
-  const totalChance = list.reduce((sum, fish) => sum + fish.chance, 0);
-  const random = Math.random() * totalChance;
-  let accumulatedChance = 0;
-  let selectedItem = null;
-  for (let fish of list) {
-    accumulatedChance += fish.chance;
-    if (random < accumulatedChance) {
-      result.value = fish;
-      selectedItem = fish;
-      break;
+  let broke = gachaCost();
+  if (broke === true) {
+    alert("Not enough coins!");
+  } else {
+    const totalChance = list.reduce((sum, fish) => sum + fish.chance, 0);
+    const random = Math.random() * totalChance;
+    let accumulatedChance = 0;
+    let selectedItem = null;
+    for (let fish of list) {
+      accumulatedChance += fish.chance;
+      if (random < accumulatedChance) {
+        result.value = fish;
+        selectedItem = fish;
+        break;
+      }
     }
   }
   if (selectedItem) {
     rolledItems.push(selectedItem);
   }
-  gachaCost();
 }
 
 function closeModal() {
@@ -82,12 +86,14 @@ function closeModal() {
 }
 
 function gachaCost() {
+  let cantAfford = false;
   let moneyAmount = parseInt(localStorage.getItem("coins"));
   if (moneyAmount >= 10) {
     let newAmount = moneyAmount - 10;
     localStorage.setItem("coins", newAmount);
   } else {
-    alert("Not enough coins!");
+    cantAfford = true;
   }
+  return cantAfford;
 }
 </script>
