@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
       <p>Current Number: {{ current }}</p>
       <button @click="makeGuess('higher')">Higher</button>
       <button @click="makeGuess('lower')">Lower</button>
