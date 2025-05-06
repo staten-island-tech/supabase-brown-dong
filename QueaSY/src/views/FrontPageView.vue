@@ -1,6 +1,16 @@
 <template>
   <div>
     <h1>Login</h1>
+    <form @submit.prevent="handleSignIn">
+      <input v-model="email" type="email" placeholder="Email" required />
+      <input
+        v-model="password"
+        type="password"
+        placeholder="Password"
+        required
+      />
+      <button type="submit">Sign in twin 🌹</button>
+    </form>
     <p v-if="!user">
       awh 🥀, hell 🥀,nah 🥀,twin 🥀, you 🥀 ,not 🥀, logged 🥀, in 🥀,twin 🥀,
       you 🥀, need 🥀, to 🥀, log🥀, tf 🥀, in 🥀, twin 🥀, who 🥀, is 🥀,
@@ -10,17 +20,11 @@
       aw 🌹 , hell🌹 , yeah🌹, twin🌹, you🌹, logged 🌹, in 🌹,twin 🌹, this🌹,
       IS🌹, you🌹, twin🌹
     </p>
-    <h2>Create an Account</h2>
-    <form @submit.prevent="handleSignup">
-      <input v-model="email" type="email" placeholder="Email" required />
-      <input
-        v-model="password"
-        type="password"
-        placeholder="Password"
-        required
-      />
-      <button type="submit">Sign Up</button>
-    </form>
+    <h1>Create an Account</h1>
+    <nav>
+      <RouterLink to="/signuptwin">sign up and prosper twin🌹</RouterLink>
+    </nav>
+
     <p v-if="auth.error" style="color: red">{{ auth.error.message }}</p>
   </div>
 </template>
@@ -44,6 +48,16 @@ async function handleSignup() {
     console.log("Signup success!", auth.user);
   } else {
     console.error("Signup failed:", auth.error);
+  }
+}
+
+async function handleSignIn() {
+  await auth.signIn(email.value, password.value);
+
+  if (auth.user) {
+    console.log("you logged in twin", auth.user);
+  } else {
+    console.error("ts login so kevin", auth.error);
   }
 }
 </script>
