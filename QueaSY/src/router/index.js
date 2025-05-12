@@ -1,15 +1,35 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "@/stores/auth.js";
-import FrontPageView from "@/views/FrontPageView.vue";
-import SignUpView from "@/views/SignUpView.vue";
-import FishTankView from "@/views/FishTankView.vue";
+import HomePage from "@/views/HomePage.vue";
+import FishTank from "@/views/FishTank.vue";
+import StorePage from "@/views/StorePage.vue";
+import SocialPage from "@/views/SocialPage.vue";
+import HigherLower from "@/views/HigherLower.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: "/", component: FrontPageView },
-    { path: "/signuptwin", component: SignUpView },
-    { path: "/tank", component: FishTankView, meta: { requiresAuth: true } },
+    { path: "/", name: "Home Page", component: HomePage },
+    {
+      path: "/tank",
+      name: "Fish Tank",
+      component: FishTank,
+    },
+    {
+      path: "/store",
+      name: "Store",
+      component: StorePage,
+    },
+    {
+      path: "/social",
+      name: "Social",
+      component: SocialPage,
+    },
+    {
+      path: "/HL",
+      name: "HLGame",
+      component: HigherLower,
+    },
   ],
 });
 
