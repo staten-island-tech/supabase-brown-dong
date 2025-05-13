@@ -37,12 +37,12 @@
                 alt="Gacha Item"
                 class="w-48 h-48 object-contain mx-auto mb-4"
               />
-              <button
-                @click="closeModal"
+              <buttonuare
+                @click="closeSquare"
                 class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-400"
               >
                 Close
-              </button>
+              </buttonuare>
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@
               class="w-48 h-48 object-contain mx-auto mb-4"
             />
             <button
-              @click="closeModal"
+              @click="closeSquare"
               class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-400"
             >
               Close
@@ -81,7 +81,7 @@
         </div>
       </div>
       <div>
-        <h1>REMOVE BUTTON HERE</h1>
+        <button @click="removeFish()">REMOVE BUTTON HERE</button>
       </div>
     </div> -->
   </div>
@@ -121,7 +121,7 @@ function rollGacha(list) {
 function removeFish() {
   selectedItem = [];
 }
-function closeModal() {
+function closeSquare() {
   result.value = null;
 }
 
