@@ -118,7 +118,9 @@ function rollGacha(list) {
     }
   }
 }
-
+function removeFish() {
+  selectedItem = [];
+}
 function closeModal() {
   result.value = null;
 }
