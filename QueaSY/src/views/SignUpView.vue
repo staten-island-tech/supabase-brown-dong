@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <h1>Sign Up with me Twan 🌹</h1>
 
     <h2>Create an Account</h2>
