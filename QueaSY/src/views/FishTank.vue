@@ -7,7 +7,7 @@
         <div
           v-for="(item, index) in rolledItems"
           :key="index"
-          class="bg-white p-4 rounded-lg shadow-lg"
+          class="cardDisplay bg-white p-4 rounded-lg shadow-lg"
         >
           <img
             :src="item.image"
@@ -37,17 +37,17 @@
                 alt="Gacha Item"
                 class="w-48 h-48 object-contain mx-auto mb-4"
               />
-              <buttonuare
+              <button
                 @click="closeSquare"
                 class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-400"
               >
                 Close
-              </buttonuare>
+              </button>
             </div>
           </div>
         </div>
         <div>
-          <button @click="removeFish(rolledItems)">REMOVE BUTTON HERE</button>
+          <button @click="removeFish()">REMOVE BUTTON HERE</button>
         </div>
       </div>
     </div>
@@ -60,7 +60,7 @@ import { ref, reactive } from "vue";
 import { fishList } from "@/fishList.js";
 
 const result = ref(null);
-const rolledItems = reactive([]);
+let rolledItems = reactive([]);
 
 function rollGacha(list) {
   let broke = gachaCost();
@@ -85,8 +85,9 @@ function rollGacha(list) {
     }
   }
 }
-function removeFish(rolledItems) {
+function removeFish() {
   rolledItems = [];
+  console.log("Bao");
 }
 function closeSquare() {
   result.value = null;
