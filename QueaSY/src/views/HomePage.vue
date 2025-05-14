@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-red-500 absolute w-[80rem] h-[50rem] flex flex-col top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 justify-center px-6 py-12 lg:px-8"
+    class="bg-sky-300 absolute w-[80rem] h-[50rem] flex flex-col top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 justify-center px-6 py-12 lg:px-8"
   >
     <h2
       class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
@@ -38,9 +38,15 @@
             type="password"
             placeholder="Password"
             required
+            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
           />
         </div>
-        <button type="submit">Sign in twin 🌹</button>
+        <button
+          type="submit"
+          class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Sign in twin 🌹
+        </button>
       </form>
     </div>
     <p v-if="!user">
