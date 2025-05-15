@@ -49,19 +49,27 @@
         </button>
       </form>
     </div>
-    <p v-if="!user">
-      awh 🥀, hell 🥀,nah 🥀,twin 🥀, you 🥀 ,not 🥀, logged 🥀, in 🥀,twin 🥀,
-      you 🥀, need 🥀, to 🥀, log🥀, tf 🥀, in 🥀, twin 🥀, who 🥀, is 🥀,
-      this🥀, twin 🥀, on 🥀,foenem 🥀 ,grave 🥀,bruh 🥀
-    </p>
-    <p v-if="user">
-      aw 🌹 , hell🌹 , yeah🌹, twin🌹, you🌹, logged 🌹, in 🌹,twin 🌹, this🌹,
-      IS🌹, you🌹, twin🌹
-    </p>
-    <h1>Create an Account</h1>
-    <nav>
-      <RouterLink to="/signup">sign up and prosper twin🌹</RouterLink>
-    </nav>
+    <!-- <div class="mt-6 max-w-xl text-base text-gray-900">
+      <p class="text-center m-auto" v-if="!user">
+        awh 🥀, hell 🥀, nah 🥀, twin 🥀, you 🥀, not 🥀, logged 🥀, in 🥀, twin
+        🥀, you 🥀, need 🥀, to 🥀, log 🥀, tf 🥀, in 🥀, twin 🥀, who 🥀, is
+        🥀, this 🥀, twin 🥀, on 🥀, foenem 🥀, grave 🥀, bruh 🥀
+      </p>
+      <p v-if="user">
+        aw 🌹, hell 🌹, yeah 🌹, twin 🌹, you 🌹, logged 🌹, in 🌹, twin 🌹,
+        this 🌹, IS 🌹, you 🌹, twin 🌹
+      </p>
+    </div> -->
+
+    <div class="mt-4 text-center">
+      <h1 class="text-xl font-semibold">Create an Account</h1>
+      <RouterLink
+        to="/signup"
+        class="mt-2 inline-block rounded-md bg-pink-600 px-4 py-2 text-white font-semibold hover:bg-pink-500 focus:outline focus:outline-2 focus:outline-pink-400"
+      >
+        sign up and prosper twin🌹
+      </RouterLink>
+    </div>
 
     <p v-if="auth.error" style="color: red">{{ auth.error.message }}</p>
   </div>

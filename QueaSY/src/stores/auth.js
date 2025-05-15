@@ -22,13 +22,24 @@ export const useAuthStore = defineStore("auth", {
 
     async signUp(email, password) {
       const { data, error } = await supabase.auth.signUp({
-        // signing up - covered by supabase!! yayayayayayaya
-
         email,
         password,
       });
-      this.error = error; // if supabase says that theres an error, the error gets stored in the variable that also conveniently named error. wow! definitely not confusing and 100% clear.
-      if (!error) this.user = data.user; // no error? yippe! the data from supabase (data.user) gets stored into pinia
+
+      if (error) {
+        // duplicate email check
+        if (error.message.includes("in use")) {
+          auth.error.message = "twin this email already in use cuh 💔💔💔💔💔";
+          alert("twin this email already in use cuh 💔💔💔💔💔");
+        } else {
+          this.error = error;
+          alert(`Error: ${error.message}`);
+          this.error = null;
+        }
+      } else {
+        this.user = data.user;
+        alert("Sign up successful twin ❤️ welcome twin");
+      }
     },
 
     async signIn(email, password) {
