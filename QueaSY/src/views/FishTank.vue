@@ -3,7 +3,9 @@
     <div
       class="absolute w-[80rem] h-[50rem] flex flex-col top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 justify-center items-center"
     >
-      <div class="w-7/8 h-3/4 bg-blue-600 mt-6 grid grid-cols-3 gap-4">
+      <div
+        class="w-7/8 h-3/4 bg-blue-600 mt-6 grid grid-cols-3 gap-4 border-6 border-black"
+      >
         <div
           v-for="(item, index) in rolledItems"
           :key="index"

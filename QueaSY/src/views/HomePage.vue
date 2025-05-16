@@ -84,7 +84,6 @@ import { storeToRefs } from "pinia";
 const email = ref("");
 const password = ref("");
 const auth = useAuthStore();
-const { user, error } = storeToRefs(auth);
 const router = useRouter();
 
 async function handleSignIn() {
@@ -92,9 +91,9 @@ async function handleSignIn() {
 
   if (auth.user) {
     console.log("you logged in twin", auth.user);
+    router.push("/tank");
   } else {
     console.error("ts login so kevin", auth.error);
-    router.push("/tank");
   }
 }
 </script>

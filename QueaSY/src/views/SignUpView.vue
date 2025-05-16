@@ -60,7 +60,6 @@ import { storeToRefs } from "pinia";
 const email = ref("");
 const password = ref("");
 const auth = useAuthStore();
-const { user, error } = storeToRefs(auth);
 const router = useRouter();
 
 async function handleSignup() {
