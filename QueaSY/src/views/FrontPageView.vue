@@ -11,15 +11,7 @@
       />
       <button type="submit">Sign in twin 🌹</button>
     </form>
-    <p v-if="!user">
-      awh 🥀, hell 🥀,nah 🥀,twin 🥀, you 🥀 ,not 🥀, logged 🥀, in 🥀,twin 🥀,
-      you 🥀, need 🥀, to 🥀, log🥀, tf 🥀, in 🥀, twin 🥀, who 🥀, is 🥀,
-      this🥀, twin 🥀, on 🥀,foenem 🥀 ,grave 🥀,bruh 🥀
-    </p>
-    <p v-if="user">
-      aw 🌹 , hell🌹 , yeah🌹, twin🌹, you🌹, logged 🌹, in 🌹,twin 🌹, this🌹,
-      IS🌹, you🌹, twin🌹
-    </p>
+    <RouterLink v-if="user" to="/tank">sign lup and prosper twin🌹</RouterLink>
     <h1>Create an Account</h1>
     <nav>
       <RouterLink to="/signuptwin">sign up and prosper twin🌹</RouterLink>

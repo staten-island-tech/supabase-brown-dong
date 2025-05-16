@@ -87,16 +87,6 @@ const auth = useAuthStore();
 const { user, error } = storeToRefs(auth);
 const router = useRouter();
 
-async function handleSignup() {
-  await auth.signUp(email.value, password.value);
-
-  if (auth.user) {
-    console.log("Signup success!", auth.user);
-  } else {
-    console.error("Signup failed:", auth.error);
-  }
-}
-
 async function handleSignIn() {
   await auth.signIn(email.value, password.value);
 
@@ -104,6 +94,7 @@ async function handleSignIn() {
     console.log("you logged in twin", auth.user);
   } else {
     console.error("ts login so kevin", auth.error);
+    router.push("/tank");
   }
 }
 </script>

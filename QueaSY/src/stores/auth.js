@@ -1,25 +1,12 @@
 import { defineStore } from "pinia";
 import { supabase } from "@/lib/supabase";
+import { useRouter } from "vue-router";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: null,
   }),
   actions: {
-    login(username, password) {
-      // placeholder
-      const dummyUser = { username: "bob", password: "fish" };
-
-      if (username === dummyUser.username && password === dummyUser.password) {
-        this.user = { username: dummyUser.username };
-        return true;
-      }
-      return false;
-    },
-    logout() {
-      this.user = null;
-    },
-
     async signUp(email, password) {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -28,9 +15,11 @@ export const useAuthStore = defineStore("auth", {
 
       if (error) {
         // duplicate email check
-        if (error.message.includes("in use")) {
-          auth.error.message = "twin this email already in use cuh 💔💔💔💔💔";
+        console.log(error);
+        if (error.message.includes("already")) {
           alert("twin this email already in use cuh 💔💔💔💔💔");
+          supabase.auth.error.message =
+            "twin this email already in use cuh 💔💔💔💔💔";
         } else {
           this.error = error;
           alert(`Error: ${error.message}`);
@@ -47,8 +36,13 @@ export const useAuthStore = defineStore("auth", {
         email,
         password,
       });
-      this.error = error;
       if (!error) this.user = data.user;
+      else {
+        this.error = error;
+        alert(error);
+      }
+
+      this.error = null;
     },
 
     async signOut() {
