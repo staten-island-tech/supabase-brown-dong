@@ -8,7 +8,7 @@ if (Number.isNaN(savedCoins.value)) {
 </script>
 
 <template>
-  <div class="bg-red-300">
+  <div class="bg-[/background.jpg]">
     <div class="fixed top-0 left-0">
       <RouterLink to="/">LOGIN</RouterLink>
     </div>
