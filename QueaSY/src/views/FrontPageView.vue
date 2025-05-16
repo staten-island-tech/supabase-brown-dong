@@ -11,7 +11,6 @@
       />
       <button type="submit">Sign in twin 🌹</button>
     </form>
-    <RouterLink v-if="user" to="/tank">sign lup and prosper twin🌹</RouterLink>
     <h1>Create an Account</h1>
     <nav>
       <RouterLink to="/signuptwin">sign up and prosper twin🌹</RouterLink>
@@ -33,21 +32,12 @@ const auth = useAuthStore();
 const { user, error } = storeToRefs(auth);
 const router = useRouter();
 
-async function handleSignup() {
-  await auth.signUp(email.value, password.value);
-
-  if (auth.user) {
-    console.log("Signup success!", auth.user);
-  } else {
-    console.error("Signup failed:", auth.error);
-  }
-}
-
 async function handleSignIn() {
   await auth.signIn(email.value, password.value);
 
   if (auth.user) {
     console.log("you logged in twin", auth.user);
+    router.push("/tank");
   } else {
     console.error("ts login so kevin", auth.error);
   }

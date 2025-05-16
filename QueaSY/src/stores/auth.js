@@ -18,8 +18,8 @@ export const useAuthStore = defineStore("auth", {
         console.log(error);
         if (error.message.includes("already")) {
           alert("twin this email already in use cuh 💔💔💔💔💔");
-          supabase.auth.error.message =
-            "twin this email already in use cuh 💔💔💔💔💔";
+          // supabase.auth.error.message =
+          //   "twin this email already in use cuh 💔💔💔💔💔";
         } else {
           this.error = error;
           alert(`Error: ${error.message}`);
@@ -43,20 +43,6 @@ export const useAuthStore = defineStore("auth", {
       }
 
       this.error = null;
-    },
-
-    async signOut() {
-      await supabase.auth.signOut();
-      this.user = null;
-    },
-
-    async fetchUser() {
-      const { data } = await supabase.auth.getUser();
-      this.user = data.user;
-    },
-
-    getters: {
-      isAuthenticated: (state) => !!state.user,
     },
   },
 });
