@@ -86,9 +86,9 @@ function rollGacha(list) {
   }
 }
 function removeFish() {
-  let currentFish = document.getElementsByClassName("cardDisplay");
-  currentFish = [];
-  console.log("Bao");
+  rolledItems = [];
+
+  console.log(rolledItems);
 }
 function closeSquare() {
   result.value = null;
