@@ -16,7 +16,6 @@
       </button>
       <p>{{ message }}</p>
       <p>Score: {{ score }}</p>
-      <p>High Score: {{ highScore }}</p>
       <button
         @click="cashout"
         class="flex items-center gap-2 relative justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
@@ -51,9 +50,9 @@ onMounted(async () => {
 const current = ref(getRandom());
 const message = ref("");
 const score = ref(0);
-const highScore = ref(0);
 const endMessage = ref("");
 const userStore = useUserStore();
+const hasfoenemcashedoutyet = ref(false);
 
 function getRandom() {
   return Math.floor(Math.random() * 10) + 1;
@@ -78,9 +77,6 @@ function makeGuess(guess) {
   ) {
     score.value++;
     message.value = `Correct! The next number was ${next}`;
-    if (score.value > highScore.value) {
-      highScore.value = score.value;
-    }
   } else {
     message.value = `Nope! The next number was ${next}`;
     score.value = 0;
@@ -89,7 +85,12 @@ function makeGuess(guess) {
 }
 
 async function cashout() {
-  endMessage.value = `You cashed out with a score of ${score.value}!`;
+  if (hasfoenemcashedoutyet.value === true) {
+    endMessage.value = "You've already cashed out!";
+    return;
+  }
+
+  endMessage.value = `You cashed out ${score.value * 10} dollars!`;
   let coinValue = score.value * 10;
   console.log(userStore.coins);
   let moneyAmount = userStore.coins + coinValue;
@@ -99,6 +100,7 @@ async function cashout() {
   // }
   await userStore.updateCoins(moneyAmount);
   console.log(userStore.coins);
+  hasfoenemcashedoutyet.value = true;
 }
 </script>
 
