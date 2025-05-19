@@ -60,6 +60,9 @@
 import { RouterLink, RouterView } from "vue-router";
 import { ref, reactive } from "vue";
 import { fishList } from "@/fishList.js";
+import { useUserStore } from "@/stores/userStores";
+
+const userStore = useUserStore();
 
 const result = ref(null);
 const rolledItems = reactive([]);
@@ -94,10 +97,11 @@ function closeModal() {
 
 function gachaCost() {
   let cantAfford = false;
-  let moneyAmount = parseInt(localStorage.getItem("coins"));
+
+  let moneyAmount = userStore.coins;
   if (moneyAmount >= 10) {
     let newAmount = moneyAmount - 10;
-    localStorage.setItem("coins", newAmount);
+    userStore.updateCoins(newAmount);
   } else {
     cantAfford = true;
   }

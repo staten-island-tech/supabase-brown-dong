@@ -12,7 +12,6 @@ export const useUserStore = defineStore("user", {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      console.log("Auth user ID:", user?.id); // 🔍 Important
 
       if (!user) return;
       this.user = user;
