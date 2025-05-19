@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    user: null,
+    user: null, // sets the user value to null (state is kinda like a reactive value, it can be edited)
   }),
   actions: {
     async signUp(email, password) {
