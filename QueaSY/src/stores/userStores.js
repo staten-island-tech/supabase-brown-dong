@@ -34,9 +34,10 @@ export const useUserStore = defineStore("user", {
     },
 
     async updateCoins(amount) {
+      console.log(this.user.id);
       if (!this.user) return;
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("Users")
         .update({ coins: amount })
         .eq("user_id", this.user.id)
