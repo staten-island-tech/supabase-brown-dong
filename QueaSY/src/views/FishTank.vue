@@ -9,7 +9,7 @@
         <div
           v-for="(item, index) in rolledItems"
           :key="index"
-          class="cardDisplay bg-white p-4 rounded-lg shadow-lg"
+          class="bg-white p-4 rounded-lg shadow-lg"
         >
           <img
             :src="item.image"
