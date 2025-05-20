@@ -16,48 +16,43 @@
       </button>
       <p>{{ message }}</p>
       <p>Score: {{ score }}</p>
-      <p>High Score: {{ highScore }}</p>
-      <button @click="cashout">
-        <svg
-          width="16px"
-          height="16px"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+      <button
+        @click="cashout"
+        class="flex items-center gap-2 relative justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
+      >
+        <span
+          class="flex items-center gap-2 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent"
         >
-          <line
-            x1="12"
-            y1="2"
-            x2="12"
-            y2="22"
-            stroke="#333333"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M17 5H10.24C8.4506 5 7 6.567 7 8.5C7 10.433 8.4506 12 10.24 12H13.5385C15.4502 12 17 13.567 17 15.5C17 17.433 15.4502 19 13.5385 19H7"
-            stroke="#333333"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        Cashout
+          <DollarIcon />
+          Cashout
+          <DollarIcon
+        /></span>
       </button>
       <p>{{ endMessage }}</p>
+      <img
+        src="https://media.tenor.com/WB9JdWZSYEUAAAAM/kendrick-lamar-god-is-gangsta.gif"
+        alt="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        class="mt-4 mx-auto max-w-xs rounded-lg shadow-lg"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import DollarIcon from "../components/DollarIcon.vue";
+import { useUserStore } from "@/stores/userStores";
+import { ref, onMounted } from "vue";
+
+onMounted(async () => {
+  await userStore.loadUserData();
+});
 
 const current = ref(getRandom());
 const message = ref("");
 const score = ref(0);
-const highScore = ref(0);
 const endMessage = ref("");
+const userStore = useUserStore();
+const hasfoenemcashedoutyet = ref(false);
 
 function getRandom() {
   return Math.floor(Math.random() * 10) + 1;
@@ -82,9 +77,6 @@ function makeGuess(guess) {
   ) {
     score.value++;
     message.value = `Correct! The next number was ${next}`;
-    if (score.value > highScore.value) {
-      highScore.value = score.value;
-    }
   } else {
     message.value = `Nope! The next number was ${next}`;
     score.value = 0;
@@ -92,16 +84,23 @@ function makeGuess(guess) {
   current.value = next;
 }
 
-function cashout() {
-  endMessage.value = `You cashed out with a score of ${score.value}!`;
-  let coinValue = score.value * 10;
-  let moneyAmount = parseInt(localStorage.getItem("coins"));
-  console.log(moneyAmount);
-  if (Number.isNaN(moneyAmount)) {
-    moneyAmount = 0;
+async function cashout() {
+  if (hasfoenemcashedoutyet.value === true) {
+    endMessage.value = "You've already cashed out!";
+    return;
   }
-  let newAmount = moneyAmount + coinValue;
-  localStorage.setItem("coins", newAmount);
+
+  endMessage.value = `You cashed out ${score.value * 10} dollars!`;
+  let coinValue = score.value * 10;
+  console.log(userStore.coins);
+  let moneyAmount = userStore.coins + coinValue;
+  console.log(moneyAmount);
+  // if (Number.isNaN(moneyAmount)) {
+  //   moneyAmount = 0;
+  // }
+  await userStore.updateCoins(moneyAmount);
+  console.log(userStore.coins);
+  hasfoenemcashedoutyet.value = true;
 }
 </script>
 
