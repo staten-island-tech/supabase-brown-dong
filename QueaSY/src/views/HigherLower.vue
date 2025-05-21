@@ -60,9 +60,8 @@ function getRandom() {
 
 function getRandomDifferent(currentNumber) {
   let newNumber;
-  do {
-    newNumber = Math.floor(Math.random() * 10) + 1;
-  } while (newNumber === currentNumber);
+  newNumber = Math.floor(Math.random() * 10) + 1;
+  while (newNumber === currentNumber);
   return newNumber;
 }
 
