@@ -17,6 +17,12 @@
     </nav>
 
     <p v-if="auth.error" style="color: red">{{ auth.error.message }}</p>
+    <button
+      @click="handleSignOut"
+      class="mt-4 w-full max-w-sm rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white hover:bg-red-500 focus:outline-red-600"
+    >
+      Sign Out
+    </button>
   </div>
 </template>
 
@@ -41,5 +47,9 @@ async function handleSignIn() {
   } else {
     console.error("ts login so kevin", auth.error);
   }
+}
+
+async function handleSignOut() {
+  await auth.signOut();
 }
 </script>

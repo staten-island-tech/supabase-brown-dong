@@ -1,47 +1,57 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 import { supabase } from "@/lib/supabase";
 
-export const useAuthStore = defineStore("auth", {
-  state: () => ({
-    user: null, // sets the user value to null (state is kinda like a reactive value, it can be edited)
-  }),
-  actions: {
-    async signUp(email, password) {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
+export const useAuthStore = defineStore("auth", () => {
+  const user = ref(null);
+  const authError = ref(null);
 
-      if (error) {
-        // duplicate email check
-        console.log(error);
-        if (error.message.includes("already")) {
-          alert("twin this email already in use cuh 💔💔💔💔💔");
-          // supabase.auth.error.message =
-          //   "twin this email already in use cuh 💔💔💔💔💔";
-        } else {
-          this.error = error;
-          alert(`Error: ${error.message}`);
-          this.error = null;
-        }
+  async function signUp(email, password) {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      // duplicate email check
+      console.log(error);
+      if (error.message.includes("already")) {
+        alert("twin this email already in use cuh 💔💔💔💔💔");
       } else {
-        this.user = data.user;
-        alert("Sign up successful twin ❤️ welcome twin");
+        authError.value = error;
+        alert(`Error: ${error.message}`);
       }
-    },
+    } else {
+      user.value = data.user;
+      authError.value = null;
+      alert("Sign up successful twin ❤️ welcome twin");
+    }
+  }
 
-    async signIn(email, password) {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (!error) this.user = data.user;
-      else {
-        this.error = error;
-        alert(error);
-      }
+  async function signIn(email, password) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (!error) user.value = data.user;
+    else {
+      authError.value = error;
+      alert(authError.message);
+    }
 
-      this.error = null;
-    },
-  },
+    authError.value = null;
+  }
+
+  async function signOut() {
+    await supabase.auth.signOut();
+    user.value = null;
+  }
+
+  return {
+    user,
+    authError,
+    signUp,
+    signIn,
+    signOut,
+  };
 });

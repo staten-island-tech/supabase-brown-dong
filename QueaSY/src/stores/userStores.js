@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { supabase } from "@/lib/supabase";
+import { ref } from "vue";
 
 export const useUserStore = defineStore("user", {
   state: () => ({

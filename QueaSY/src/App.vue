@@ -13,7 +13,7 @@ const userStore = useUserStore();
 <template>
   <div class="bg-[/background.jpg]">
     <div class="fixed top-0 left-0">
-      <RouterLink to="/">LOGIN</RouterLink>
+      <RouterLink to="/">LOGIN/SIGNOUT</RouterLink>
     </div>
     <div class="fixed top-0 left-1/2 -translate-x-1/2">
       <RouterLink to="/tank">TANK</RouterLink>

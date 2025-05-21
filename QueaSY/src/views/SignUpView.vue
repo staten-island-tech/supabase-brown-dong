@@ -52,10 +52,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth.js";
 import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
 
 const email = ref("");
 const password = ref("");
@@ -69,6 +68,7 @@ async function handleSignup() {
     console.log("Signup success!", auth.user);
   } else {
     console.error("Signup failed:", auth.error);
+    router.push("/tank");
   }
 }
 </script>
