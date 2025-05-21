@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted } from "vue";
 import { RouterLink, RouterView } from "vue-router";
+import { useAuthStore } from "./stores/auth";
 import { useUserStore } from "@/stores/userStores";
 
 onMounted(async () => {
