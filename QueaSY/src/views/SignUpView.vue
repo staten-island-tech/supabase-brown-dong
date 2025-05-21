@@ -34,6 +34,7 @@ async function handleSignup() {
 
   if (auth.user) {
     console.log("Signup success!", auth.user);
+    router.push("/tank");
   } else {
     console.error("Signup failed:", auth.error);
   }
