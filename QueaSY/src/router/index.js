@@ -5,11 +5,13 @@ import FishTank from "@/views/FishTank.vue";
 import StorePage from "@/views/StorePage.vue";
 import SocialPage from "@/views/SocialPage.vue";
 import HigherLower from "@/views/HigherLower.vue";
+import SignUpView from "@/views/SignUpView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: "/", name: "Home Page", component: HomePage },
+    { path: "/signup", name: "Sign Up", component: SignUpView },
     {
       path: "/tank",
       name: "Fish Tank",

@@ -2,25 +2,57 @@
   <div>
     <div class="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
       <p>Current Number: {{ current }}</p>
-      <button @click="makeGuess('higher')">Higher</button>
-      <button @click="makeGuess('lower')">Lower</button>
+      <button
+        @click="makeGuess('higher')"
+        class="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+      >
+        Higher
+      </button>
+      <button
+        @click="makeGuess('lower')"
+        class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+      >
+        Lower
+      </button>
       <p>{{ message }}</p>
       <p>Score: {{ score }}</p>
-      <p>High Score: {{ highScore }}</p>
-      <button @click="cashout">Cashout</button>
+      <button
+        @click="cashout"
+        class="flex items-center gap-2 relative justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
+      >
+        <span
+          class="flex items-center gap-2 relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent"
+        >
+          <DollarIcon />
+          Cashout
+          <DollarIcon
+        /></span>
+      </button>
       <p>{{ endMessage }}</p>
+      <img
+        src="https://media.tenor.com/WB9JdWZSYEUAAAAM/kendrick-lamar-god-is-gangsta.gif"
+        alt="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        class="mt-4 mx-auto max-w-xs rounded-lg shadow-lg"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import DollarIcon from "../components/DollarIcon.vue";
+import { useUserStore } from "@/stores/userStores";
+import { ref, onMounted } from "vue";
+
+onMounted(async () => {
+  await userStore.loadUserData();
+});
 
 const current = ref(getRandom());
 const message = ref("");
 const score = ref(0);
-const highScore = ref(0);
 const endMessage = ref("");
+const userStore = useUserStore();
+const hasfoenemcashedoutyet = ref(false);
 
 function getRandom() {
   return Math.floor(Math.random() * 10) + 1;
@@ -45,9 +77,6 @@ function makeGuess(guess) {
   ) {
     score.value++;
     message.value = `Correct! The next number was ${next}`;
-    if (score.value > highScore.value) {
-      highScore.value = score.value;
-    }
   } else {
     message.value = `Nope! The next number was ${next}`;
     score.value = 0;
@@ -55,16 +84,37 @@ function makeGuess(guess) {
   current.value = next;
 }
 
-function cashout() {
-  endMessage.value = `You cashed out with a score of ${score.value}!`;
-  let coinValue = score.value * 10;
-  let moneyAmount = parseInt(localStorage.getItem("coins"));
-  console.log(moneyAmount);
-  if (Number.isNaN(moneyAmount)) {
-    moneyAmount = 0;
+function resetGame() {
+  current.value = getRandom();
+  score.value = 0;
+  message.value = "";
+  endMessage.value = "";
+  hasfoenemcashedoutyet.value = false;
+}
+
+async function cashout() {
+  if (hasfoenemcashedoutyet.value === true) {
+    alert("You've already cashed out! run that back boy");
+    resetGame();
+    return;
   }
-  let newAmount = moneyAmount + coinValue;
-  localStorage.setItem("coins", newAmount);
+
+  endMessage.value = `You cashed out ${score.value * 10} dollars!`;
+  let coinValue = score.value * 10;
+  console.log(userStore.coins);
+  let moneyAmount = userStore.coins + coinValue;
+  console.log(moneyAmount);
+  // if (Number.isNaN(moneyAmount)) {
+  //   moneyAmount = 0;
+  // }
+  await userStore.updateCoins(moneyAmount);
+  console.log(userStore.coins);
+  hasfoenemcashedoutyet.value = true;
+  alert(endMessage.value);
+
+  setTimeout(() => {
+    resetGame();
+  }, 200);
 }
 </script>
 

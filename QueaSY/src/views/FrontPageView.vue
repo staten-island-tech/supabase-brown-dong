@@ -11,21 +11,18 @@
       />
       <button type="submit">Sign in twin 🌹</button>
     </form>
-    <p v-if="!user">
-      awh 🥀, hell 🥀,nah 🥀,twin 🥀, you 🥀 ,not 🥀, logged 🥀, in 🥀,twin 🥀,
-      you 🥀, need 🥀, to 🥀, log🥀, tf 🥀, in 🥀, twin 🥀, who 🥀, is 🥀,
-      this🥀, twin 🥀, on 🥀,foenem 🥀 ,grave 🥀,bruh 🥀
-    </p>
-    <p v-if="user">
-      aw 🌹 , hell🌹 , yeah🌹, twin🌹, you🌹, logged 🌹, in 🌹,twin 🌹, this🌹,
-      IS🌹, you🌹, twin🌹
-    </p>
     <h1>Create an Account</h1>
     <nav>
       <RouterLink to="/signuptwin">sign up and prosper twin🌹</RouterLink>
     </nav>
 
     <p v-if="auth.error" style="color: red">{{ auth.error.message }}</p>
+    <button
+      @click="handleSignOut"
+      class="mt-4 w-full max-w-sm rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white hover:bg-red-500 focus:outline-red-600"
+    >
+      Sign Out
+    </button>
   </div>
 </template>
 
@@ -41,23 +38,18 @@ const auth = useAuthStore();
 const { user, error } = storeToRefs(auth);
 const router = useRouter();
 
-async function handleSignup() {
-  await auth.signUp(email.value, password.value);
-
-  if (auth.user) {
-    console.log("Signup success!", auth.user);
-  } else {
-    console.error("Signup failed:", auth.error);
-  }
-}
-
 async function handleSignIn() {
   await auth.signIn(email.value, password.value);
 
   if (auth.user) {
     console.log("you logged in twin", auth.user);
+    router.push("/tank");
   } else {
     console.error("ts login so kevin", auth.error);
   }
+}
+
+async function handleSignOut() {
+  await auth.signOut();
 }
 </script>

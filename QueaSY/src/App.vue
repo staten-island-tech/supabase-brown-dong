@@ -1,16 +1,19 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted } from "vue";
 import { RouterLink, RouterView } from "vue-router";
-let savedCoins = ref(parseInt(localStorage.getItem("coins")));
-if (Number.isNaN(savedCoins.value)) {
-  savedCoins = 0;
-}
+import { useUserStore } from "@/stores/userStores";
+
+onMounted(async () => {
+  await userStore.loadUserData();
+});
+
+const userStore = useUserStore();
 </script>
 
 <template>
-  <div class="bg-red-300">
+  <div class="bg-[/background.jpg]">
     <div class="fixed top-0 left-0">
-      <RouterLink to="/">LOGIN</RouterLink>
+      <RouterLink to="/">LOGIN/SIGNOUT</RouterLink>
     </div>
     <div class="fixed top-0 left-1/2 -translate-x-1/2">
       <RouterLink to="/tank">TANK</RouterLink>
@@ -22,7 +25,7 @@ if (Number.isNaN(savedCoins.value)) {
       <RouterLink to="/social">SOCIAL</RouterLink>
     </div>
     <div class="fixed right-0 top-0">
-      <p>{{ savedCoins }}</p>
+      <p>{{ userStore.coins }}</p>
     </div>
     <RouterView />
   </div>

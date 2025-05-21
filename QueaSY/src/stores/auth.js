@@ -1,57 +1,57 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 import { supabase } from "@/lib/supabase";
 
-export const useAuthStore = defineStore("auth", {
-  state: () => ({
-    user: null,
-  }),
-  actions: {
-    login(username, password) {
-      // placeholder
-      const dummyUser = { username: "bob", password: "fish" };
+export const useAuthStore = defineStore("auth", () => {
+  const user = ref(null);
+  const authError = ref(null);
 
-      if (username === dummyUser.username && password === dummyUser.password) {
-        this.user = { username: dummyUser.username };
-        return true;
+  async function signUp(email, password) {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      // duplicate email check
+      console.log(error);
+      if (error.message.includes("already")) {
+        alert("twin this email already in use cuh 💔💔💔💔💔");
+      } else {
+        authError.value = error;
+        alert(`Error: ${error.message}`);
       }
-      return false;
-    },
-    logout() {
-      this.user = null;
-    },
+    } else {
+      user.value = data.user;
+      authError.value = null;
+      alert("Sign up successful twin ❤️ welcome twin");
+    }
+  }
 
-    async signUp(email, password) {
-      const { data, error } = await supabase.auth.signUp({
-        // signing up - covered by supabase!! yayayayayayaya
+  async function signIn(email, password) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (!error) user.value = data.user;
+    else {
+      authError.value = error;
+      alert(authError.message);
+    }
 
-        email,
-        password,
-      });
-      this.error = error; // if supabase says that theres an error, the error gets stored in the variable that also conveniently named error. wow! definitely not confusing and 100% clear.
-      if (!error) this.user = data.user; // no error? yippe! the data from supabase (data.user) gets stored into pinia
-    },
+    authError.value = null;
+  }
 
-    async signIn(email, password) {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      this.error = error;
-      if (!error) this.user = data.user;
-    },
+  async function signOut() {
+    await supabase.auth.signOut();
+    user.value = null;
+  }
 
-    async signOut() {
-      await supabase.auth.signOut();
-      this.user = null;
-    },
-
-    async fetchUser() {
-      const { data } = await supabase.auth.getUser();
-      this.user = data.user;
-    },
-
-    getters: {
-      isAuthenticated: (state) => !!state.user,
-    },
-  },
+  return {
+    user,
+    authError,
+    signUp,
+    signIn,
+    signOut,
+  };
 });
