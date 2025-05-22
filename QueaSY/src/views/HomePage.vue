@@ -99,7 +99,7 @@ async function handleSignIn() {
     console.log("you logged in twin", auth.user);
     router.push("/tank");
   } else {
-    console.error("ts login so kevin", auth.error);
+    console.error("ts signin so kevin", auth.error);
   }
 }
 async function handleSignOut() {

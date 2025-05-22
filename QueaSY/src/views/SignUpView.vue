@@ -69,7 +69,6 @@ async function handleSignup() {
     router.push("/tank");
   } else {
     console.error("Signup failed:", auth.error);
-    router.push("/tank");
   }
 }
 </script>

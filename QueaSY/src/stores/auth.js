@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { supabase } from "@/lib/supabase";
+import { useUserStore } from "./userStores";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref(null);
@@ -45,6 +46,8 @@ export const useAuthStore = defineStore("auth", () => {
   async function signOut() {
     await supabase.auth.signOut();
     user.value = null;
+    const userStore = useUserStore();
+    userStore.coins = 0;
   }
 
   return {

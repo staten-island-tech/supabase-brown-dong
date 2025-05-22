@@ -1,14 +1,23 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, computed, watch } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import { useAuthStore } from "./stores/auth";
 import { useUserStore } from "@/stores/userStores";
 
-onMounted(async () => {
-  await userStore.loadUserData();
-});
-
 const userStore = useUserStore();
+const authStore = useAuthStore();
+
+const user = computed(() => authStore.user);
+
+watch(user, async (newUser) => {
+  if (newUser) {
+    // if newuser has a value (meaning theyre logged in)
+    await userStore.loadUserData(); // load
+  } else {
+    // otherwise reset coin counter
+    userStore.coins = 0;
+  }
+});
 </script>
 
 <template>
@@ -26,7 +35,7 @@ const userStore = useUserStore();
       <RouterLink to="/social">SOCIAL</RouterLink>
     </div>
     <div class="fixed right-0 top-0">
-      <p>{{ userStore.coins }}</p>
+      <p>{{ user ? userStore.coins : 0 }}</p>
     </div>
     <RouterView />
   </div>
