@@ -58,7 +58,7 @@
 
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { fishList } from "@/fishList.js";
 import { useUserStore } from "@/stores/userStores";
 import { supabase } from "@/lib/supabase";
@@ -68,7 +68,29 @@ const userStore = useUserStore();
 const result = ref(null);
 const rolledItems = reactive([]);
 
-function rollGacha(list) {
+onMounted(async () => {
+  const currentUser = ref(null);
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return;
+  currentUser.value = user;
+
+  const { data, error } = await supabase
+    .from("user_fish")
+    .select("*")
+    .eq("user_id", userStore.id);
+
+  if (error) {
+    console.error("Error fetching fish:", error);
+  } else {
+    rolledItems = data;
+  }
+});
+
+async function rollGacha(list) {
   let broke = gachaCost();
   if (broke === true) {
     alert("Not enough coins!");
@@ -89,18 +111,17 @@ function rollGacha(list) {
     if (selectedItem) {
       rolledItems.push(selectedItem);
 
-      const { error } = await supabase.from('UserFish').insert({
-      user_id: userStore.user.id,
-      species: selectedItem.name,
-      image: selectedItem.image,
-    });
+      const { error } = await supabase.from("UserFish").insert({
+        user_id: userStore.user.id,
+        species: selectedItem.name,
+        image: selectedItem.image,
+      });
 
-    if (error) {
-      console.error('Error saving fish:', error);
+      if (error) {
+        console.error("Error saving fish:", error);
+      }
     }
-
   }
-
 }
 
 function closeModal() {
