@@ -61,6 +61,7 @@ import { RouterLink, RouterView } from "vue-router";
 import { ref, reactive } from "vue";
 import { fishList } from "@/fishList.js";
 import { useUserStore } from "@/stores/userStores";
+import { supabase } from "@/lib/supabase";
 
 const userStore = useUserStore();
 
@@ -87,8 +88,19 @@ function rollGacha(list) {
 
     if (selectedItem) {
       rolledItems.push(selectedItem);
+
+      const { error } = await supabase.from('UserFish').insert({
+      user_id: userStore.user.id,
+      species: selectedItem.name,
+      image: selectedItem.image,
+    });
+
+    if (error) {
+      console.error('Error saving fish:', error);
     }
+
   }
+
 }
 
 function closeModal() {
