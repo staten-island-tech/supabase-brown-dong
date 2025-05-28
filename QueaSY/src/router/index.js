@@ -40,8 +40,8 @@ export default router;
 // router.beforeEach((to, from, next) => {
 //   const auth = useAuthStore();
 
-//   if (to.meta.requiresAuth && !auth.isAuthenticated) {
-//     next("/login");
+//   if (to.meta.requiresAuth && !auth.user.value) {
+//     next("/");
 //   } else {
 //     next();
 //   }

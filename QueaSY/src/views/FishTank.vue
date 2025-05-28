@@ -69,6 +69,8 @@ const result = ref(null);
 const rolledItems = reactive([]);
 
 onMounted(async () => {
+  await userStore.loadUserData(); // ?????????????????
+
   const currentUser = ref(null);
 
   const {
@@ -81,12 +83,12 @@ onMounted(async () => {
   const { data, error } = await supabase
     .from("user_fish")
     .select("*")
-    .eq("user_id", userStore.id);
+    .eq("user_id", user.id); // hughughugh
 
   if (error) {
     console.error("Error fetching fish:", error);
   } else {
-    rolledItems = data;
+    rolledItems.values = data;
   }
 });
 
@@ -111,8 +113,13 @@ async function rollGacha(list) {
     if (selectedItem) {
       rolledItems.push(selectedItem);
 
-      const { error } = await supabase.from("UserFish").insert({
-        user_id: userStore.user.id,
+      if (!userStore.currentUser.value) {
+        console.error("User not loaded.");
+        return;
+      }
+
+      const { error } = await supabase.from("user_fish").insert({
+        user_id: userStore.currentUser.value.id,
         species: selectedItem.name,
         image: selectedItem.image,
       });
