@@ -1,22 +1,31 @@
 <template>
   <div>
-    <div>
-      <svg
-        version="1.1"
-        width="300"
-        height="200"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <rect width="100%" height="100%" fill="red" />
-
-        <circle cx="150" cy="100" r="80" fill="green" />
-
-        <text x="150" y="125" font-size="60" text-anchor="middle" fill="white">
-          SVG
-        </text>
-      </svg>
-    </div>
+    <div><canvas id="ideeznuts" width="500" height="500"></canvas></div>
+    <div><canvas id="MarkFridlin" width="500" height="500"></canvas></div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { onMounted } from "vue";
+let x = 0;
+function draw() {
+  const canvas = document.getElementById("ideeznuts");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = "black";
+  ctx.fillStyle = "white";
+  ctx.fillRect(x, 200, 50, 50);
+  ctx.strokeRect(x, 200, 50, 50);
+  x += 2;
+  if (x > canvas.width) x = -50;
+  requestAnimationFrame(draw);
+}
+function create() {
+  const canvas = document.getElementById("MarkFridlin");
+  const ctx = canvas.getContext("2d");
+}
+onMounted(() => {
+  draw();
+});
+</script>
