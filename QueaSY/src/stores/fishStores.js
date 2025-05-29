@@ -41,7 +41,13 @@ export const useFishStore = defineStore("fishStore", () => {
   }
 
   async function addFish(fish) {
-    const user = userStore.currentUser?.value;
+    const user = userStore.currentUser;
+    console.log("this is user store . currentUser");
+    console.log(userStore.currentUser);
+    console.log("this is user store : ");
+    console.log(userStore);
+    console.log("this is hopefully userstore.currentuser.value");
+    console.log(userStore.currentUser.value);
 
     if (!user) {
       console.warn("User not loaded, can't save fish.");
