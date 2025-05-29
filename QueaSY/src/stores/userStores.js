@@ -15,6 +15,10 @@ export const useUserStore = defineStore("user", () => {
     if (!user) return;
     currentUser.value = user;
 
+    // Confirm user is loaded here
+    currentUser.value = user;
+    console.log("User set in store:", currentUser.value);
+
     const { data, error } = await supabase
       .from("Users")
       .select("coins")
@@ -22,14 +26,15 @@ export const useUserStore = defineStore("user", () => {
       // data -> user -> like everything under the sun basically theres so much stuff under its "details"
       .single();
 
-    console.log("Data:", data);
-    console.log("Error:", error);
+    // console.log("Data:", data);
+    // console.log("Error:", error);
 
     if (!error && data) {
       console.log("Coins from Supabase:", data?.coins);
 
       coins.value = data.coins; // makes the current value of the coins on the website = the value of coins in data
     }
+    return user;
   }
 
   async function updateCoins(amount) {

@@ -6,17 +6,20 @@
       <div
         class="w-7/8 h-3/4 bg-blue-600 mt-6 grid grid-cols-3 gap-4 border-6 border-black"
       >
-        <div
-          v-for="(item, index) in rolledItems"
-          :key="index"
-          class="bg-white p-4 rounded-lg shadow-lg"
-        >
-          <img
-            :src="item.image"
-            :alt="item.name"
-            class="w-24 h-24 object-contain mx-auto"
-          />
-          <p class="text-center mt-2">{{ item.name }}</p>
+        <div v-if="fishStore.loading">Loading your fish...</div>
+        <div v-else>
+          <div
+            v-for="fish in fishStore.rolledItems"
+            :key="fish.id || fish.name"
+            class="bg-white p-4 rounded-lg shadow-lg"
+          >
+            <img
+              :src="fish.image"
+              :alt="fish.name"
+              class="w-24 h-24 object-contain mx-auto"
+            />
+            <p class="text-center mt-2">{{ fish.name }}</p>
+          </div>
         </div>
       </div>
       <div class="flex justify-around bg-blue-400 w-7/8">
@@ -57,94 +60,53 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
-import { ref, reactive, onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { fishList } from "@/fishList.js";
+import { useFishStore } from "@/stores/fishStores";
 import { useUserStore } from "@/stores/userStores";
-import { supabase } from "@/lib/supabase";
 
+const fishStore = useFishStore();
 const userStore = useUserStore();
-
 const result = ref(null);
-const rolledItems = reactive([]);
 
 onMounted(async () => {
-  await userStore.loadUserData(); // ?????????????????
-
-  const currentUser = ref(null);
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return;
-  currentUser.value = user;
-
-  const { data, error } = await supabase
-    .from("user_fish")
-    .select("*")
-    .eq("user_id", user.id); // hughughugh
-
-  if (error) {
-    console.error("Error fetching fish:", error);
-  } else {
-    rolledItems.values = data;
-  }
+  await userStore.loadUserData(); // just to be safe
 });
-
-async function rollGacha(list) {
-  let broke = gachaCost();
-  if (broke === true) {
-    alert("Not enough coins!");
-  } else {
-    const totalChance = list.reduce((sum, fish) => sum + fish.chance, 0);
-    const random = Math.random() * totalChance;
-    let accumulatedChance = 0;
-    let selectedItem = null;
-    for (let fish of list) {
-      accumulatedChance += fish.chance;
-      if (random < accumulatedChance) {
-        result.value = fish;
-        selectedItem = fish;
-        break;
-      }
-    }
-
-    if (selectedItem) {
-      rolledItems.push(selectedItem);
-
-      if (!userStore.currentUser.value) {
-        console.error("User not loaded.");
-        return;
-      }
-
-      const { error } = await supabase.from("user_fish").insert({
-        user_id: userStore.currentUser.value.id,
-        species: selectedItem.name,
-        image: selectedItem.image,
-      });
-
-      if (error) {
-        console.error("Error saving fish:", error);
-      }
-    }
-  }
-}
 
 function closeModal() {
   result.value = null;
 }
 
 function gachaCost() {
-  let cantAfford = false;
-
-  let moneyAmount = userStore.coins;
-  if (moneyAmount >= 10) {
-    let newAmount = moneyAmount - 10;
-    userStore.updateCoins(newAmount);
-  } else {
-    cantAfford = true;
+  if (userStore.coins >= 10) {
+    userStore.updateCoins(userStore.coins - 10);
+    return false;
   }
-  return cantAfford;
+  return true;
+}
+
+async function rollGacha(list) {
+  if (gachaCost()) {
+    alert("Not enough coins!");
+    return;
+  }
+
+  const totalChance = list.reduce((sum, fish) => sum + fish.chance, 0);
+  const random = Math.random() * totalChance;
+  let accumulated = 0;
+  let selected = null;
+
+  for (let fish of list) {
+    accumulated += fish.chance;
+    if (random < accumulated) {
+      selected = fish;
+      break;
+    }
+  }
+
+  if (selected) {
+    result.value = selected;
+    await fishStore.addFish(selected); // this saves and updates store
+  }
 }
 </script>
