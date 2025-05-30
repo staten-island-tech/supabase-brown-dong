@@ -63,10 +63,25 @@ import { onMounted, ref } from "vue";
 import { fishList } from "@/fishList.js";
 import { useFishStore } from "@/stores/fishStores";
 import { useUserStore } from "@/stores/userStores";
+import { supabase } from "@/lib/supabase";
 
 const fishStore = useFishStore();
 const userStore = useUserStore();
 const result = ref(null);
+
+onMounted(async () => {
+  // Wait for Supabase to ensure user is authenticated
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    userStore.currentUser = user;
+    await fishStore.fetchUserFish(user.id);
+  } else {
+    console.warn("User not authenticated. Cannot fetch fish.");
+  }
+});
 
 function closeModal() {
   result.value = null;

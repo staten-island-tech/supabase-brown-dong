@@ -65,7 +65,7 @@
       <h1 class="text-xl font-semibold">Create an Account</h1>
       <RouterLink
         to="/signup"
-        class="mt-2 inline-block rounded-md bg-pink-600 px-4 py-2 text-white font-semibold hover:bg-pink-500 focus:outline focus:outline-2 focus:outline-pink-400"
+        class="mt-2 inline-block rounded-md bg-pink-600 px-4 py-2 text-white font-semibold hover:bg-pink-500 focus:outline-2 focus:outline-pink-400"
       >
         sign up and prosper twin🌹
       </RouterLink>

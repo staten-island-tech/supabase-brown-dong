@@ -8,7 +8,6 @@ export const useFishStore = defineStore("fishStore", () => {
   const rolledItems = ref([]);
   const loading = ref(false);
   const error = ref(null);
-  const selected = ref();
 
   const userStore = useUserStore();
 
