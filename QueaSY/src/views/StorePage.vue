@@ -25,15 +25,17 @@ function create() {
   const canvas2 = document.getElementById("MarkFridlin");
   const ctx2 = canvas2.getContext("2d");
   ctx2.beginPath();
-  ctx2.moveTo(75, 475);
-  ctx2.lineTo(125, 475);
-  ctx2.lineTo(125, 465);
-  ctx2.lineTo(135, 465);
-  ctx2.lineTo(135, 485);
-  ctx2.lineTo(125, 485);
+  ctx2.moveTo(75, 250);
+  ctx2.lineTo(125, 250);
+  ctx2.lineTo(125, 150);
+  ctx2.lineTo(135, 150);
+  ctx2.lineTo(135, 350);
+  ctx2.lineTo(125, 350);
   ctx2.lineTo(125, 500);
   ctx2.lineTo(120, 500);
-  ctx2.lineTo(120, 485);
+  ctx2.lineTo(120, 350);
+  ctx2.lineTo(80, 350);
+  ctx2.lineTo(80, 500);
   ctx2.lineTo(75, 500);
   ctx2.fill();
 }
