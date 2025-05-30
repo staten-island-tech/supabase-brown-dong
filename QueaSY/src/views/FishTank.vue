@@ -70,7 +70,6 @@ const userStore = useUserStore();
 const result = ref(null);
 
 onMounted(async () => {
-  // Wait for Supabase to ensure user is authenticated
   const {
     data: { user },
   } = await supabase.auth.getUser();
