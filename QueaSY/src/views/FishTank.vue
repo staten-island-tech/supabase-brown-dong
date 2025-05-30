@@ -6,8 +6,7 @@
       <div
         class="w-7/8 h-3/4 bg-blue-600 mt-6 grid grid-cols-3 gap-4 border-6 border-black"
       >
-        <div v-if="fishStore.loading">Loading your fish...</div>
-        <div v-else>
+        <div>
           <div
             v-for="fish in fishStore.rolledItems"
             :key="fish.id || fish.name"
@@ -69,10 +68,6 @@ const fishStore = useFishStore();
 const userStore = useUserStore();
 const result = ref(null);
 
-onMounted(async () => {
-  await userStore.loadUserData(); // just to be safe
-});
-
 function closeModal() {
   result.value = null;
 }
@@ -105,7 +100,6 @@ async function rollGacha(list) {
   }
 
   if (selected) {
-    result.value = selected;
     await fishStore.addFish(selected); // this saves and updates store
   }
 }

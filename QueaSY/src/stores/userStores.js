@@ -15,10 +15,6 @@ export const useUserStore = defineStore("user", () => {
     if (!user) return;
     currentUser.value = user;
 
-    // Confirm user is loaded here
-    currentUser.value = user;
-    console.log("User set in store:", currentUser.value);
-
     const { data, error } = await supabase
       .from("Users")
       .select("coins")
