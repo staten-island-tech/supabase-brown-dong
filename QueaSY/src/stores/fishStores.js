@@ -12,6 +12,8 @@ export const useFishStore = defineStore("fishStore", () => {
   const userStore = useUserStore();
 
   function decorateUserFish(userFish) {
+    // takes supabase fish and adds the image and chance n sht to each entry
+
     return userFish.map((f) => {
       const match = fishList.find((fish) => fish.name === f.species);
       return {
@@ -41,46 +43,9 @@ export const useFishStore = defineStore("fishStore", () => {
     }
   }
 
-  //   async function addFish(fish) {
-  //     const user = userStore.currentUser;
-
-  //     const { data: existsAlready, error: fetchError } = await supabase
-  //       .from("user_fish")
-  //       .select("*")
-  //       .eq("user_id", user.id)
-  //       .eq("species", fish.name.trim())
-  //       .single();
-
-  //     if (existsAlready) {
-  //       await supabase
-  //         .from("user_fish")
-  //         .update({ quantity: existsAlready.quantity + 1 })
-  //         .eq("id", existsAlready.id);
-  //     } else {
-  //       await supabase.from("user_fish").insert({
-  //         user_id: userStore.currentUser.id,
-  //         species: fish.name,
-  //         quantity: 1,
-  //       });
-  //     }
-
-  //     //  const { error: insertError } = await supabase.from("user_fish").insert({
-  //     //    user_id: user.id,
-  //     //    species: fish.name,
-  //     //  });
-
-  //     //  if (!insertError) {
-  //     //    rolledItems.value.push(fish);
-  //     //  } else {
-  //     //    console.error("Failed to save fish:", insertError);
-  //     //  }
-  //   }
-
   async function addFish(fish) {
     const user = userStore.currentUser;
     if (!user) return;
-
-    let existsAlready = null;
 
     try {
       const { data, error } = await supabase
@@ -90,32 +55,22 @@ export const useFishStore = defineStore("fishStore", () => {
         .eq("species", fish.name.trim())
         .single();
 
-      if (data) {
-        existsAlready = data;
-      } else if (error && error.code !== "PGRST116") {
-        // Only log real errors, not "no match found"
-        console.error("Supabase fetch error:", error);
-        return;
-      }
+      // if (data) {
+      //   existsAlready = data;
+      // } else if (error && error.code !== "PGRST116") {
+      //   // Only log real errors, not "no match found"
+      //   console.error("Supabase fetch error:", error);
+      //   return;
+      // }
     } catch (err) {
       console.error("Unexpected Supabase error:", err);
       return;
     }
 
-    if (existsAlready && existsAlready.id) {
-      // Update quantity if fish already exists
-      await supabase
-        .from("user_fish")
-        .update({ quantity: existsAlready.quantity + 1 })
-        .eq("id", existsAlready.id);
-    } else {
-      // Insert new fish row if not found
-      await supabase.from("user_fish").insert({
-        user_id: user.id,
-        species: fish.name.trim(),
-        quantity: 1,
-      });
-    }
+    await supabase.from("user_fish").insert({
+      user_id: user.id,
+      species: fish.name.trim(),
+    });
 
     // Optionally refresh the store
     await fetchUserFish(user.id);

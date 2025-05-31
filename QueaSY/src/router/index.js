@@ -37,12 +37,12 @@ const router = createRouter({
 
 export default router;
 
-// router.beforeEach((to, from, next) => {
-//   const auth = useAuthStore();
+router.beforeEach((to, from, next) => {
+  const auth = useAuthStore();
 
-//   if (to.meta.requiresAuth && !auth.user.value) {
-//     next("/");
-//   } else {
-//     next();
-//   }
-// });
+  if (to.meta.requiresAuth && !auth.user.value) {
+    next("/");
+  } else {
+    next();
+  }
+});

@@ -59,15 +59,36 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed, watch } from "vue";
 import { fishList } from "@/fishList.js";
 import { useFishStore } from "@/stores/fishStores";
 import { useUserStore } from "@/stores/userStores";
+import { useAuthStore } from "@/stores/auth";
 import { supabase } from "@/lib/supabase";
 
 const fishStore = useFishStore();
 const userStore = useUserStore();
+const authStore = useAuthStore();
 const result = ref(null);
+const user = computed(() => authStore.user);
+
+// clears tank if you're not logged in but. cookies exist so i dunno it should be fine
+/*
+watch(
+  () => authStore.user,
+  async (newUser) => {
+    if (newUser) {
+      // if newuser has a value (meaning theyre logged in)
+      userStore.currentUser = newUser;
+      await fishStore.fetchUserFish(newUser.id); // load
+    } else {
+      // otherwise reset
+      result.value = null;
+      fishStore.rolledItems = [];
+    }
+  }
+); 
+*/
 
 onMounted(async () => {
   const {
@@ -115,6 +136,7 @@ async function rollGacha(list) {
 
   if (selected) {
     await fishStore.addFish(selected); // this saves and updates store
+    result.value = selected;
   }
 }
 </script>
