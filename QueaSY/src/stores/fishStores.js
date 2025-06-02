@@ -54,14 +54,6 @@ export const useFishStore = defineStore("fishStore", () => {
         .eq("user_id", user.id)
         .eq("species", fish.name.trim())
         .single();
-
-      // if (data) {
-      //   existsAlready = data;
-      // } else if (error && error.code !== "PGRST116") {
-      //   // Only log real errors, not "no match found"
-      //   console.error("Supabase fetch error:", error);
-      //   return;
-      // }
     } catch (err) {
       console.error("Unexpected Supabase error:", err);
       return;

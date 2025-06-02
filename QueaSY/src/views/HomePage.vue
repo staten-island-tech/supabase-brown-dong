@@ -85,11 +85,13 @@
 <script setup>
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth.js";
+import { useUserStore } from "@/stores/userStores.js";
 import { useRouter } from "vue-router";
 
 const email = ref("");
 const password = ref("");
 const auth = useAuthStore();
+const userStore = useUserStore();
 const router = useRouter();
 
 async function handleSignIn() {
@@ -97,6 +99,7 @@ async function handleSignIn() {
 
   if (auth.user) {
     console.log("you logged in twin", auth.user);
+    await userStore.loadUserData();
     router.push("/tank");
   } else {
     console.error("ts signin so kevin", auth.error);

@@ -3,18 +3,22 @@ import { onMounted, computed, watch } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import { useAuthStore } from "./stores/auth";
 import { useUserStore } from "@/stores/userStores";
+import { supabase } from "@/lib/supabase.js";
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
 
-const user = computed(() => authStore.user);
+onMounted(async () => {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-watch(user, async (newUser) => {
-  if (newUser) {
-    // if newuser has a value (meaning theyre logged in)
-    await userStore.loadUserData(); // load
+  if (user) {
+    userStore.currentUser = user;
+    console.log(user);
+    await userStore.loadUserData();
   } else {
-    // otherwise reset coin counter
+    console.warn("User not signed in. no coins will be loaded.");
     userStore.coins = 0;
   }
 });
@@ -35,7 +39,7 @@ watch(user, async (newUser) => {
       <RouterLink to="/social">SOCIAL</RouterLink>
     </div>
     <div class="fixed right-0 top-0">
-      <p>{{ user ? userStore.coins : 0 }}</p>
+      <p v-if="userStore.coins !== null">Coins: {{ userStore.coins }}</p>
     </div>
     <RouterView />
   </div>

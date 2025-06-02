@@ -100,6 +100,7 @@ onMounted(async () => {
     await fishStore.fetchUserFish(user.id);
   } else {
     console.warn("User not authenticated. Cannot fetch fish.");
+    fishStore.rolledItems = null;
   }
 });
 
