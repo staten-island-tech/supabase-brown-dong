@@ -72,24 +72,6 @@ const authStore = useAuthStore();
 const result = ref(null);
 const user = computed(() => authStore.user);
 
-// clears tank if you're not logged in but. cookies exist so i dunno it should be fine
-/*
-watch(
-  () => authStore.user,
-  async (newUser) => {
-    if (newUser) {
-      // if newuser has a value (meaning theyre logged in)
-      userStore.currentUser = newUser;
-      await fishStore.fetchUserFish(newUser.id); // load
-    } else {
-      // otherwise reset
-      result.value = null;
-      fishStore.rolledItems = [];
-    }
-  }
-); 
-*/
-
 onMounted(async () => {
   const {
     data: { user },
@@ -140,4 +122,7 @@ async function rollGacha(list) {
     result.value = selected;
   }
 }
+
+const removeMode = ref(false);
+const selectedForSlimingOut = reactive([]);
 </script>

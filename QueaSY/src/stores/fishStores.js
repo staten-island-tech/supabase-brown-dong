@@ -17,7 +17,7 @@ export const useFishStore = defineStore("fishStore", () => {
     return userFish.map((f) => {
       const match = fishList.find((fish) => fish.name === f.species);
       return {
-        ...f,
+        ...f, // < copies supabase stuff from fishList to be added to by the match. thanks chatgpt!
         name: match?.name || f.species, // fallback to species
         image: match?.image || "default.png",
         chance: match?.chance || 0,
