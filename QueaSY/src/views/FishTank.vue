@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch } from "vue";
+import { onMounted, ref, computed, watch, reactive } from "vue";
 import { fishList } from "@/fishList.js";
 import { useFishStore } from "@/stores/fishStores";
 import { useUserStore } from "@/stores/userStores";
@@ -70,7 +70,6 @@ const fishStore = useFishStore();
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const result = ref(null);
-const user = computed(() => authStore.user);
 
 onMounted(async () => {
   const {

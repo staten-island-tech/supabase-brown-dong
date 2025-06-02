@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "@/stores/auth.js";
+
 import HomePage from "@/views/HomePage.vue";
 import FishTank from "@/views/FishTank.vue";
 import StorePage from "@/views/StorePage.vue";
@@ -16,6 +17,7 @@ const router = createRouter({
       path: "/tank",
       name: "Fish Tank",
       component: FishTank,
+      meta: { requiresAuth: true },
     },
     {
       path: "/store",
@@ -40,7 +42,7 @@ export default router;
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore();
 
-  if (to.meta.requiresAuth && !auth.user.value) {
+  if (to.meta.requiresAuth && !auth.user) {
     next("/");
   } else {
     next();

@@ -22,6 +22,15 @@ onMounted(async () => {
     userStore.coins = 0;
   }
 });
+
+async function alertUser() {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    alert("sign in or create a account first!");
+  }
+}
 </script>
 
 <template>
@@ -30,7 +39,7 @@ onMounted(async () => {
       <RouterLink to="/">LOGIN/SIGNOUT</RouterLink>
     </div>
     <div class="fixed top-0 left-1/2 -translate-x-1/2">
-      <RouterLink to="/tank">TANK</RouterLink>
+      <RouterLink to="/tank"><span @click="alertUser"> tank </span></RouterLink>
     </div>
     <div class="fixed left-0 top-1/2 -translate-y-1/2">
       <RouterLink to="/store">STORE</RouterLink>
