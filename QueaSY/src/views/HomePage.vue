@@ -102,7 +102,7 @@ async function handleSignIn() {
     await userStore.loadUserData();
     router.push("/tank");
   } else {
-    console.error("ts signin so kevin", auth.error);
+    console.error("ts signin so kevin:", auth.authError.message);
   }
 }
 async function handleSignOut() {

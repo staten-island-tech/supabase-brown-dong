@@ -37,10 +37,14 @@ export const useAuthStore = defineStore("auth", () => {
     if (!error) user.value = data.user;
     else {
       authError.value = error;
-      alert(authError.message);
+      if (authError.value.message === "Invalid login credentials") {
+        alert("Incorrect username or password");
+      } else {
+        alert(authError.value.message);
+      }
     }
 
-    authError.value = null;
+    // authError.value = null;
   }
 
   async function signOut() {
