@@ -1,25 +1,23 @@
 <template>
   <div class="w-150 h-[100rem]">
     <div
+      v-if="loading === true"
+      class="fixed inset-0 flex items-center justify-center"
+    >
+      <img
+        src="https://i.pinimg.com/originals/07/6a/57/076a57893486507bad1e909a7dcce2b1.gif"
+        alt="Loading..."
+        class="w-full h-full object-cover"
+      />
+    </div>
+    <div
+      v-if="loading === false"
       class="absolute w-[80rem] h-[50rem] flex flex-col top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 justify-center items-center"
     >
       <div
         class="w-7/8 h-3/4 bg-blue-600 mt-6 grid grid-cols-3 gap-4 border-6 border-black"
       >
-        <div>
-          <div
-            v-for="fish in fishStore.rolledItems"
-            :key="fish.id || fish.name"
-            class="bg-white p-4 rounded-lg shadow-lg"
-          >
-            <img
-              :src="fish.image"
-              :alt="fish.name"
-              class="w-24 h-24 object-contain mx-auto"
-            />
-            <p class="text-center mt-2">{{ fish.name }}</p>
-          </div>
-        </div>
+        <FishCard :fishes="fishStore.rolledItems" />
       </div>
       <div class="flex justify-around bg-blue-400 w-7/8">
         <div>
@@ -59,30 +57,38 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch } from "vue";
+import { onMounted, ref, computed, watch, reactive } from "vue";
 import { fishList } from "@/fishList.js";
 import { useFishStore } from "@/stores/fishStores";
 import { useUserStore } from "@/stores/userStores";
 import { useAuthStore } from "@/stores/auth";
 import { supabase } from "@/lib/supabase";
+import FishCard from "@/components/FishCard.vue";
 
 const fishStore = useFishStore();
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const result = ref(null);
 const user = computed(() => authStore.user);
+const loading = ref(true);
 
 onMounted(async () => {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (user) {
-    userStore.currentUser = user;
-    await fishStore.fetchUserFish(user.id);
-  } else {
-    console.warn("User not authenticated. Cannot fetch fish.");
-    fishStore.rolledItems = null;
+    if (user) {
+      userStore.currentUser = user;
+      await fishStore.fetchUserFish(user.id);
+    } else {
+      console.warn(
+        "yea yo user aint authenticated lil boy we cant fetch yo fish gang "
+      );
+      fishStore.rolledItems = null;
+    }
+  } finally {
+    loading.value = false;
   }
 });
 
