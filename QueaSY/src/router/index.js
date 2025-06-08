@@ -44,6 +44,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta.requiresAuth && !auth.user) {
     next("/");
+    alert("you not logged in");
   } else {
     next();
   }

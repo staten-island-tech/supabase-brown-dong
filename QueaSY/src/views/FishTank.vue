@@ -51,7 +51,10 @@
         <div>
           <button
             style="background-image: url('/remove.jpg')"
-            @click="removeMode = !removeMode"
+            @click="
+              removeMode = !removeMode;
+              console.log(removeMode);
+            "
             class="w-[150px] h-[50px] bg-no-repeat bg-center bg-contain border-none cursor-pointer"
           ></button>
           <p class="mt-2 text-center">
@@ -68,7 +71,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch, reactive } from "vue";
+import { onMounted, ref, reactive } from "vue";
 import { fishList } from "@/fishList.js";
 import { useFishStore } from "@/stores/fishStores";
 import { useUserStore } from "@/stores/userStores";
