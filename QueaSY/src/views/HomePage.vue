@@ -70,16 +70,22 @@
         sign up and prosper twin🌹
       </RouterLink>
     </div>
-
+    <div class="mt-4 flex justify-center">
+      <button
+        @click="handleSignOut"
+        class="w-full max-w-sm rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white hover:bg-red-500 focus:outline-red-600"
+      >
+        Sign Out
+      </button>
+    </div>
     <p v-if="auth.error" style="color: red">{{ auth.error.message }}</p>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth.js";
 import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
 
 const email = ref("");
 const password = ref("");
@@ -95,5 +101,11 @@ async function handleSignIn() {
   } else {
     console.error("ts login so kevin", auth.error);
   }
+}
+async function handleSignOut() {
+  await auth.signOut();
+
+  alert("you've signed out!");
+  console.log("u outta there twin");
 }
 </script>

@@ -1,51 +1,55 @@
 import { defineStore } from "pinia";
 import { supabase } from "@/lib/supabase";
+import { ref } from "vue";
 
-export const useUserStore = defineStore("user", {
-  state: () => ({
-    user: null,
-    coins: 0,
-    level: 1,
-  }),
-  actions: {
-    async loadUserData() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+export const useUserStore = defineStore("user", () => {
+  const currentUser = ref(null);
+  const coins = ref(0);
+  const level = ref(1);
 
-      if (!user) return;
-      this.user = user;
+  async function loadUserData() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-      const { data, error } = await supabase
-        .from("Users")
-        .select("coins")
-        .eq("user_id", user.id) // makes sure that supabases user_id is equal to to user.id, which is provided through the getUser
-        // data -> user -> like everything under the sun basically theres so much stuff under its "details"
-        .single();
+    if (!user) return;
+    currentUser.value = user;
 
-      console.log("Data:", data);
-      console.log("Error:", error);
+    const { data, error } = await supabase
+      .from("Users")
+      .select("coins")
+      .eq("user_id", user.id) // makes sure that supabases user_id is equal to to user.id, which is provided through the getUser
+      // data -> user -> like everything under the sun basically theres so much stuff under its "details"
+      .single();
 
-      if (!error && data) {
-        console.log("Coins from Supabase:", data?.coins);
+    console.log("Data:", data);
+    console.log("Error:", error);
 
-        this.coins = data.coins; // makes the current value of the coins on the website = the value of coins in data
-      }
-    },
+    if (!error && data) {
+      console.log("Coins from Supabase:", data?.coins);
 
-    async updateCoins(amount) {
-      console.log(this.user.id);
-      if (!this.user) return;
+      coins.value = data.coins; // makes the current value of the coins on the website = the value of coins in data
+    }
+  }
 
-      const { data, error } = await supabase
-        .from("Users")
-        .update({ coins: amount })
-        .eq("user_id", this.user.id)
-        .single();
+  async function updateCoins(amount) {
+    if (!currentUser.value) return;
 
-      if (!error) {
-        this.coins = amount;
-      }
-    },
-  },
+    const { error } = await supabase
+      .from("Users")
+      .update({ coins: amount })
+      .eq("user_id", currentUser.value.id)
+      .single();
+
+    if (!error) {
+      coins.value = amount;
+    }
+  }
+  return {
+    currentUser,
+    coins,
+    level,
+    loadUserData,
+    updateCoins,
+  };
 });

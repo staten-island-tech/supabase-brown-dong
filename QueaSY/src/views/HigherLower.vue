@@ -83,9 +83,18 @@ function makeGuess(guess) {
   current.value = next;
 }
 
+function resetGame() {
+  current.value = getRandom();
+  score.value = 0;
+  message.value = "";
+  endMessage.value = "";
+  hasfoenemcashedoutyet.value = false;
+}
+
 async function cashout() {
   if (hasfoenemcashedoutyet.value === true) {
-    endMessage.value = "You've already cashed out!";
+    alert("You've already cashed out! run that back boy");
+    resetGame();
     return;
   }
 
@@ -100,6 +109,11 @@ async function cashout() {
   await userStore.updateCoins(moneyAmount);
   console.log(userStore.coins);
   hasfoenemcashedoutyet.value = true;
+  alert(endMessage.value);
+
+  setTimeout(() => {
+    resetGame();
+  }, 200);
 }
 </script>
 
