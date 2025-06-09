@@ -27,6 +27,9 @@
           :removeMode="removeMode"
           :selectedFish="selectedForSlimingOut"
         />
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       </div>
       <div class="flex justify-around bg-blue-400 w-7/8">
@@ -154,8 +157,11 @@ async function rollGacha(list) {
 
 const removeMode = ref(false);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 const selectedForSlimingOut = reactive([]);
 =======
+=======
+>>>>>>> Stashed changes
 
 async function removeFish() {
   if (fishStore.selectedForSlimingOut.length === 0) {
