@@ -65,22 +65,23 @@ export const useFishStore = defineStore("fishStore", () => {
       date_added: new Date().toISOString(),
     });
   }
-  const selectedForSlimingOut = ref([]);
 
   async function removeFish(id) {
     const user = userStore.currentUser;
     if (!user) return;
 
-    const response = await supabase
+    const { error } = await supabase
       .from("user_fish")
       .delete()
-      .eq("id", id)
+      .eq("fish_id", id)
       .eq("user_id", user.id);
 
-    if (response) {
-      rolledItems.value = rolledItems.value.filter((fish) => fish.id !== id);
-      console.log("slimed");
+    if (error) {
+      console.log("deleting failed yo");
+      return;
     }
+    rolledItems.value = rolledItems.value.filter((fish) => fish.id !== id);
+    console.log("slimed");
   }
 
   return {

@@ -30,6 +30,7 @@ const selected = ref(false);
 const props = defineProps({
   fish: Object,
   removeMode: Boolean,
+  selected: Boolean,
 });
 
 const emit = defineEmits(["selectedfishtobeslimed"]);

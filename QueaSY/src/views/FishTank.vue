@@ -56,6 +56,7 @@
         </div>
         <div>
           <button
+            v-if="!removeMode"
             style="background-image: url('/remove.jpg')"
             @click="
               removeMode = !removeMode;
@@ -63,6 +64,13 @@
             "
             class="w-[150px] h-[50px] bg-no-repeat bg-center bg-contain border-none cursor-pointer"
           ></button>
+          <button
+            v-if="removeMode"
+            style="background-image: url('/cancel.jpg')"
+            @click="removeMode = !removeMode"
+            class="w-[150px] h-[50px] bg-no-repeat bg-center bg-contain border-none cursor-pointer"
+          ></button>
+
           <p class="mt-2 text-center">
             {{
               removeMode
@@ -85,7 +93,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref, reactive, watch } from "vue";
 import { fishList } from "@/fishList.js";
 import { useFishStore } from "@/stores/fishStores";
 import { useUserStore } from "@/stores/userStores";
@@ -118,6 +126,26 @@ onMounted(async () => {
     loading.value = false;
   }
 });
+
+const removeMode = ref(false);
+const selectedForSlimingOut = ref([]);
+
+function toggleSwissCheesing({ fish, selected }) {
+  if (selected) {
+    selectedForSlimingOut.value.push(fish);
+  } else {
+    selectedForSlimingOut.value = selectedForSlimingOut.value.filter(
+      (f) => f.id !== fish.id
+    );
+  }
+}
+
+async function confirmRemoval() {
+  for (const fish of selectedForSlimingOut.value) {
+    await fishStore.removeFish(fish.id);
+  }
+  selectedForSlimingOut.value = [];
+}
 
 function closeModal() {
   result.value = null;
@@ -154,35 +182,5 @@ async function rollGacha(list) {
     await fishStore.addFish(selected); // this saves and updates store
     result.value = selected;
   }
-}
-
-const removeMode = ref(false);
-const selectedForSlimingOut = ref([]);
-
-function toggleSwissCheesing({ fish, selected }) {
-  if (selected) {
-    selectedForSlimingOut.value.push(fish);
-  } else {
-    selectedForSlimingOut.value = selectedForSlimingOut.value.filter(
-      (f) => f.id !== fish.id
-    );
-  }
-}
-
-// async function removeFish() {
-//   if (fishStore.selectedForSlimingOut.length === 0) {
-//     alert("you aint got no fish selected to slime out twin");
-//     return;
-//   }
-//   selectedForSlimingOut.forEach((toberemoved) => {
-//     console.log(fishId in toberemoved);
-//   });
-// }
-
-async function confirmRemoval() {
-  for (const fish of selectedForSlimingOut.value) {
-    await fishStore.removeFish(fish.id);
-  }
-  selectedForSlimingOut.value = [];
 }
 </script>
