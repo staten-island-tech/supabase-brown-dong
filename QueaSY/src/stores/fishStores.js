@@ -71,11 +71,15 @@ export const useFishStore = defineStore("fishStore", () => {
     const user = userStore.currentUser;
     if (!user) return;
 
-    const response = await supabase.from("user_fish").delete().eq(id, 1);
+    const response = await supabase
+      .from("user_fish")
+      .delete()
+      .eq("id", id)
+      .eq("user_id", user.id);
 
     if (response) {
+      rolledItems.value = rolledItems.value.filter((fish) => fish.id !== id);
       console.log("slimed");
-      console.log("remove" + selectedForSlimingOut);
     }
   }
 

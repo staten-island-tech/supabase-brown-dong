@@ -22,7 +22,7 @@
           :key="fish.id || fish.name"
           :fish="fish"
           :removeMode="removeMode"
-          :selectedFish="selectedForSlimingOut"
+          @selectedfishtobeslimed="toggleSwissCheesing"
         />
       </div>
       <div class="flex justify-around bg-blue-400 w-7/8">
@@ -70,6 +70,14 @@
                 : "SLIME THE FISH OUT👹👹👹👹👹 "
             }}
           </p>
+        </div>
+        <div v-if="removeMode && selectedForSlimingOut.length > 0" class="mt-4">
+          <button
+            @click="confirmRemoval"
+            class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            Slime {{ selectedForSlimingOut.length }} Fish 🐟💀
+          </button>
         </div>
       </div>
     </div>
@@ -149,14 +157,32 @@ async function rollGacha(list) {
 }
 
 const removeMode = ref(false);
+const selectedForSlimingOut = ref([]);
 
-async function removeFish() {
-  if (fishStore.selectedForSlimingOut.length === 0) {
-    alert("you aint got no fish selected to slime out twin");
-    return;
+function toggleSwissCheesing({ fish, selected }) {
+  if (selected) {
+    selectedForSlimingOut.value.push(fish);
+  } else {
+    selectedForSlimingOut.value = selectedForSlimingOut.value.filter(
+      (f) => f.id !== fish.id
+    );
   }
-  selectedForSlimingOut.forEach((toberemoved) => {
-    console.log(fishId in toberemoved);
-  });
+}
+
+// async function removeFish() {
+//   if (fishStore.selectedForSlimingOut.length === 0) {
+//     alert("you aint got no fish selected to slime out twin");
+//     return;
+//   }
+//   selectedForSlimingOut.forEach((toberemoved) => {
+//     console.log(fishId in toberemoved);
+//   });
+// }
+
+async function confirmRemoval() {
+  for (const fish of selectedForSlimingOut.value) {
+    await fishStore.removeFish(fish.id);
+  }
+  selectedForSlimingOut.value = [];
 }
 </script>
