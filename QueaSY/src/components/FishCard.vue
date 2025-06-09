@@ -6,6 +6,12 @@
         :alt="fish.name"
         class="w-24 h-24 object-contain mx-auto"
       />
+      <div v-if="removeMode" class="absolute top-2 right-2">
+        <input
+          type="checkbox"
+          class="cursor-pointer w-24 h-24 object-contain mx-auto"
+        />
+      </div>
       <p class="text-center mt-2">{{ fish.name }}</p>
 
       <div v-if="removeMode" class="flex items-center justify-between mt-2">

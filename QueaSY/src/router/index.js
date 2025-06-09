@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useAuthStore } from "@/stores/auth.js";
+import { supabase } from "@/lib/supabase";
 
 import HomePage from "@/views/HomePage.vue";
 import FishTank from "@/views/FishTank.vue";
@@ -39,12 +39,13 @@ const router = createRouter({
 
 export default router;
 
-router.beforeEach((to, from, next) => {
-  const auth = useAuthStore();
+router.beforeEach(async (to, from, next) => {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (to.meta.requiresAuth && !auth.user) {
+  if (to.meta.requiresAuth && !user) {
     next("/");
-    alert("you not logged in");
   } else {
     next();
   }
