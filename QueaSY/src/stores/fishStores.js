@@ -47,25 +47,36 @@ export const useFishStore = defineStore("fishStore", () => {
     const user = userStore.currentUser;
     if (!user) return;
 
-    try {
-      const { data, error } = await supabase
-        .from("user_fish")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("species", fish.name.trim())
-        .single();
-    } catch (err) {
-      console.error("Unexpected Supabase error:", err);
-      return;
-    }
+    // try {
+    //   const { data, error } = await supabase
+    //     .from("user_fish")
+    //     .select("*")
+    //     .eq("user_id", user.id)
+    //     .eq("species", fish.name.trim())
+    //     .single();
+    // } catch (err) {
+    //   console.error("Unexpected Supabase error:", err);
+    //   return;
+    // }
 
     await supabase.from("user_fish").insert({
       user_id: user.id,
       species: fish.name.trim(),
+      date_added: new Date().toISOString(),
     });
+  }
+  const selectedForSlimingOut = ref([]);
 
-    // Optionally refresh the store
-    await fetchUserFish(user.id);
+  async function removeFish(id) {
+    const user = userStore.currentUser;
+    if (!user) return;
+
+    const response = await supabase.from("user_fish").delete().eq(id, 1);
+
+    if (response) {
+      console.log("slimed");
+      console.log("remove" + selectedForSlimingOut);
+    }
   }
 
   return {
@@ -74,5 +85,7 @@ export const useFishStore = defineStore("fishStore", () => {
     error,
     fetchUserFish,
     addFish,
+    removeFish,
+    response,
   };
 });
