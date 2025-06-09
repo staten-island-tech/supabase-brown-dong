@@ -9,7 +9,8 @@
         <div
           v-for="(item, index) in rolledItems"
           :key="index"
-          class="bg-white p-4 rounded-lg shadow-lg"
+          :style="getPositionStyle(item)"
+          class=""
         >
           <img
             :src="item.image"
@@ -86,19 +87,24 @@ function rollGacha(list) {
     }
 
     if (selectedItem) {
-      rolledItems.push(selectedItem);
+      addToTank(selectedItem);
     }
   }
 }
-function removeFish() {
-  rolledItems = [];
-
-  console.log(rolledItems);
+function addToTank(selectedItem) {
+  const fish = {
+    ...selectedItem,
+    position: {
+      top: `${Math.random() * (65 - 25) + 10}%`,
+      left: `${Math.random() * 80 + 5}%`,
+    },
+    size: Math.floor(Math.random() * 75) + 50,
+  };
+  rolledItems.push(fish);
 }
 function closeSquare() {
   result.value = null;
 }
-
 function gachaCost() {
   let cantAfford = false;
 
@@ -110,5 +116,14 @@ function gachaCost() {
     cantAfford = true;
   }
   return cantAfford;
+}
+function getPositionStyle(item) {
+  return {
+    position: "absolute",
+    top: item.position.top,
+    left: item.position.left,
+    width: `${item.size}px`,
+    height: `${item.size}px`,
+  };
 }
 </script>
