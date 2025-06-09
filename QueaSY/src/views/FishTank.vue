@@ -17,9 +17,6 @@
       <div
         class="w-7/8 h-3/4 bg-blue-600 mt-6 grid grid-cols-3 gap-4 border-6 border-black overflow-auto"
       >
-        <<<<<<< HEAD <<<<<<< Updated upstream
-        <FishCard :fishes="fishStore.rolledItems" />
-        =======
         <FishCard
           v-for="fish in fishStore.rolledItems"
           :key="fish.id || fish.name"
@@ -27,17 +24,6 @@
           :removeMode="removeMode"
           :selectedFish="selectedForSlimingOut"
         />
-        <<<<<<< Updated upstream >>>>>>> Stashed changes ======= >>>>>>> Stashed
-        changes =======
-        <FishCard
-          :fishes="fishStore.rolledItems"
-          :removeMode="removeMode"
-          :selectedFish="selectedForSlimingOut"
-        />
-        <div v-if="removeMode" class="absolute top-1 right-1">
-          <input type="checkbox" />
-        </div>
-        >>>>>>> main
       </div>
       <div class="flex justify-around bg-blue-400 w-7/8">
         <div>
