@@ -17,7 +17,14 @@
       <div
         class="w-7/8 h-3/4 bg-blue-600 mt-6 grid grid-cols-3 gap-4 border-6 border-black"
       >
-        <FishCard :fishes="fishStore.rolledItems" />
+        <FishCard
+          :fishes="fishStore.rolledItems"
+          :removeMode="removeMode"
+          :selectedFish="selectedForSlimingOut"
+        />
+        <div v-if="removeMode" class="absolute top-1 right-1">
+          <input type="checkbox" />
+        </div>
       </div>
       <div class="flex justify-around bg-blue-400 w-7/8">
         <div>
@@ -144,4 +151,14 @@ async function rollGacha(list) {
 
 const removeMode = ref(false);
 const selectedForSlimingOut = reactive([]);
+
+async function removeFish() {
+  if (selectedForSlimingOut.length === 0) {
+    alert("you aint got no fish selected to slime out twin");
+    return;
+  }
+  selectedForSlimingOut.forEach((toberemoved) => {
+    console.log(fishId in toberemoved);
+  });
+}
 </script>
