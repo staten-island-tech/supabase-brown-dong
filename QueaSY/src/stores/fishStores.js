@@ -86,6 +86,5 @@ export const useFishStore = defineStore("fishStore", () => {
     fetchUserFish,
     addFish,
     removeFish,
-    response,
   };
 });

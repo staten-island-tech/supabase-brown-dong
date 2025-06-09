@@ -17,9 +17,9 @@
       <div
         class="w-7/8 h-3/4 bg-blue-600 mt-6 grid grid-cols-3 gap-4 border-6 border-black overflow-auto"
       >
-<<<<<<< Updated upstream
+        <<<<<<< Updated upstream
         <FishCard :fishes="fishStore.rolledItems" />
-=======
+        =======
         <FishCard
           v-for="fish in fishStore.rolledItems"
           :key="fish.id || fish.name"
@@ -27,10 +27,8 @@
           :removeMode="removeMode"
           :selectedFish="selectedForSlimingOut"
         />
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+        <<<<<<< Updated upstream >>>>>>> Stashed changes ======= >>>>>>> Stashed
+        changes
       </div>
       <div class="flex justify-around bg-blue-400 w-7/8">
         <div>
@@ -156,12 +154,6 @@ async function rollGacha(list) {
 }
 
 const removeMode = ref(false);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-const selectedForSlimingOut = reactive([]);
-=======
-=======
->>>>>>> Stashed changes
 
 async function removeFish() {
   if (fishStore.selectedForSlimingOut.length === 0) {
@@ -172,5 +164,4 @@ async function removeFish() {
     console.log(fishId in toberemoved);
   });
 }
->>>>>>> Stashed changes
 </script>

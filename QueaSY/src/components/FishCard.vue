@@ -6,12 +6,8 @@
         :alt="fish.name"
         class="w-24 h-24 object-contain mx-auto"
       />
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
       <p class="text-center mt-2">{{ fish.name }}</p>
-=======
-=======
->>>>>>> Stashed changes
+
       <div v-if="removeMode" class="flex items-center justify-between mt-2">
         <p class="text-center">slime out {{ fish.name }} 💔🔨</p>
         <input
@@ -20,29 +16,15 @@
         />
       </div>
       <p v-else class="text-center mt-2">{{ fish.name }}</p>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     </div>
   </div>
 </template>
 
 <script setup>
 defineProps({
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  fishes: Array,
-=======
   fish: Object,
   removeMode: Boolean,
   selectedFish: Object,
->>>>>>> Stashed changes
-=======
-  fish: Object,
-  removeMode: Boolean,
-  selectedFish: Object,
->>>>>>> Stashed changes
 });
 </script>
 
