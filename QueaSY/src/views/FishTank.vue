@@ -95,7 +95,7 @@ function addToTank(selectedItem) {
   const fish = {
     ...selectedItem,
     position: {
-      top: `${Math.random() * (65 - 25) + 10}%`,
+      top: `${Math.random() * 60 + 10}%`,
       left: `${Math.random() * 80 + 5}%`,
     },
     size: Math.floor(Math.random() * 75) + 50,
