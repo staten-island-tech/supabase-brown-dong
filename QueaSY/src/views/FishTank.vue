@@ -118,15 +118,7 @@ onMounted(async () => {
     if (user) {
       userStore.currentUser = user;
       await fishStore.fetchUserFish(user.id);
-      await nextTick();
-      fishStore.rolledItems = fishStore.rolledItems.map((fish) => ({
-        ...fish,
-        position: {
-          top: `${Math.random() * 55 + 10}%`,
-          left: `${Math.random() * 80 + 10}%`,
-        },
-        size: Math.floor(Math.random() * 40) + 50,
-      }));
+      fishStore.rolledItems = fishPosition(fishStore.rolledItems);
     } else {
       console.warn(
         "yea yo user aint authenticated lil boy we cant fetch yo fish gang "
@@ -167,39 +159,6 @@ async function confirmRemoval() {
   selectedForSlimingOut.value = [];
   fishStore.rolledItems = [...fishStore.rolledItems];
 }
-function addToTank(selectedItem) {
-  let fish;
-  if (selectedItem.type === "swimmer") {
-    fish = {
-      ...selectedItem,
-      position: {
-        top: `${Math.random() * 55 + 10}%`,
-        left: `${Math.random() * 80 + 10}%`,
-      },
-      size: Math.floor(Math.random()) + 50,
-    };
-  }
-  if (selectedItem.type === "walker") {
-    fish = {
-      ...selectedItem,
-      position: {
-        top: `${70}%`,
-        left: `${Math.random() * 80 + 10}%`,
-      },
-      size: Math.floor(Math.random()) + 50,
-    };
-  } else {
-    fish = {
-      ...selectedItem,
-      position: {
-        top: `${Math.random() * 55 + 10}%`,
-        left: `${Math.random() * 80 + 10}%`,
-      },
-      size: Math.floor(Math.random()) + 50,
-    };
-  }
-  rolledItems.push(fish);
-}
 function closeSquare() {
   result.value = null;
 }
@@ -226,7 +185,6 @@ async function rollGacha(list) {
     accumulated += fish.chance;
     if (random < accumulated) {
       selectedItem = fish;
-      addToTank(selectedItem);
       break;
     }
   }
@@ -237,6 +195,7 @@ async function rollGacha(list) {
       data: { user },
     } = await supabase.auth.getUser();
     await fishStore.fetchUserFish(user.id);
+    fishStore.rolledItems = fishPosition(fishStore.rolledItems);
   }
 }
 function getPositionStyle(fish) {
@@ -248,6 +207,27 @@ function getPositionStyle(fish) {
       width: `${fish.size}px`,
       height: `${fish.size}px`,
     };
+  }
+}
+function fishPosition(fishArray) {
+  if (fishArray.type === "walker") {
+    return fishArray.map((fish) => ({
+      ...fish,
+      position: {
+        top: `${70}%`,
+        left: `${Math.random() * 80 + 10}%`,
+      },
+      size: Math.floor(Math.random() * 40) + 50,
+    }));
+  } else {
+    return fishArray.map((fish) => ({
+      ...fish,
+      position: {
+        top: `${Math.random() * 55 + 10}%`,
+        left: `${Math.random() * 80 + 10}%`,
+      },
+      size: Math.floor(Math.random()) + 50,
+    }));
   }
 }
 </script>
