@@ -18,6 +18,7 @@ export const useFishStore = defineStore("fishStore", () => {
       const match = fishList.find((fish) => fish.name === f.species);
       return {
         ...f, // < copies supabase stuff from fishList to be added to by the match. thanks chatgpt!
+        id: f.fish_id,
         name: match?.name || f.species, // fallback to species
         image: match?.image || "default.png",
         chance: match?.chance || 0,
@@ -46,18 +47,6 @@ export const useFishStore = defineStore("fishStore", () => {
   async function addFish(fish) {
     const user = userStore.currentUser;
     if (!user) return;
-
-    // try {
-    //   const { data, error } = await supabase
-    //     .from("user_fish")
-    //     .select("*")
-    //     .eq("user_id", user.id)
-    //     .eq("species", fish.name.trim())
-    //     .single();
-    // } catch (err) {
-    //   console.error("Unexpected Supabase error:", err);
-    //   return;
-    // }
 
     await supabase.from("user_fish").insert({
       user_id: user.id,

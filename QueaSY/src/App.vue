@@ -38,9 +38,13 @@ async function alertUser() {
     <div class="fixed top-0 left-0">
       <RouterLink to="/">LOGIN/SIGNOUT</RouterLink>
     </div>
-    <div class="fixed top-0 left-1/2 -translate-x-1/2">
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 flex space-x-8">
       <RouterLink to="/tank"><span @click="alertUser"> tank </span></RouterLink>
+      <RouterLink to="/stats"
+        ><span @click="alertUser"> user stats! </span></RouterLink
+      >
     </div>
+
     <div class="fixed left-0 top-1/2 -translate-y-1/2">
       <RouterLink to="/store">STORE</RouterLink>
     </div>

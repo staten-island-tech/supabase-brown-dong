@@ -4,5 +4,3 @@ export const fishList = [
   { name: "Poliwhirl", chance: 12, image: "Poliwhirl.png" },
   { name: "Spongebob Banana", chance: 8, image: "SpongebobBanana.png" },
 ];
-
-// save fishList[1] x many times ? maybe?

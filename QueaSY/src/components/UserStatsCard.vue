@@ -40,15 +40,6 @@ function selectToSlime(event) {
   });
   console.log(props.fish.name + event.target.checked);
 }
-
-// watch(
-//   () => props.removeMode,
-//   (newVal) => {
-//     if (!newVal) {
-//       selected.value = false;
-//     }
-//   }
-// );
 </script>
 
 <style scoped></style>

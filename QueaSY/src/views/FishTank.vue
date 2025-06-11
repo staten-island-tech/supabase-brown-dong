@@ -22,6 +22,7 @@
           :key="fish.id || fish.name"
           :fish="fish"
           :removeMode="removeMode"
+          :isSelected="selectedForSlimingOut.some((f) => f.id === fish.id)"
           @selectedfishtobeslimed="toggleSwissCheesing"
         />
       </div>
@@ -67,7 +68,7 @@
           <button
             v-if="removeMode"
             style="background-image: url('/cancel.jpg')"
-            @click="removeMode = !removeMode"
+            @click="cancelSliming"
             class="w-[150px] h-[50px] bg-no-repeat bg-center bg-contain border-none cursor-pointer"
           ></button>
 
@@ -131,20 +132,33 @@ const removeMode = ref(false);
 const selectedForSlimingOut = ref([]);
 
 function toggleSwissCheesing({ fish, selected }) {
+  const exists = selectedForSlimingOut.value.some((f) => f.id === fish.id);
   if (selected) {
     selectedForSlimingOut.value.push(fish);
-  } else {
-    selectedForSlimingOut.value = selectedForSlimingOut.value.filter(
-      (f) => f.id !== fish.id
+  } else if (!selected && exists) {
+    const index = selectedForSlimingOut.value.findIndex(
+      (f) => f.id === fish.id
     );
+    if (index !== -1) {
+      // -1 means it cant find anything matching
+      selectedForSlimingOut.value.splice(index, 1); // Modify array in place
+    }
   }
+  console.log("Updated selection array:", selectedForSlimingOut.value);
+}
+
+function cancelSliming() {
+  removeMode.value = false;
+  selectedForSlimingOut.value = [];
 }
 
 async function confirmRemoval() {
   for (const fish of selectedForSlimingOut.value) {
-    await fishStore.removeFish(fish.id);
+    console.log(fish.fish_id);
+    await fishStore.removeFish(fish.fish_id);
   }
   selectedForSlimingOut.value = [];
+  fishStore.rolledItems = [...fishStore.rolledItems];
 }
 
 function closeModal() {
@@ -181,6 +195,10 @@ async function rollGacha(list) {
   if (selected) {
     await fishStore.addFish(selected); // this saves and updates store
     result.value = selected;
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    await fishStore.fetchUserFish(user.id);
   }
 }
 </script>

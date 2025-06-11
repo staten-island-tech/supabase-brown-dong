@@ -7,6 +7,7 @@ import StorePage from "@/views/StorePage.vue";
 import SocialPage from "@/views/SocialPage.vue";
 import HigherLower from "@/views/HigherLower.vue";
 import SignUpView from "@/views/SignUpView.vue";
+import UserStats from "@/views/UserStats.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,12 @@ const router = createRouter({
       path: "/tank",
       name: "Fish Tank",
       component: FishTank,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/stats",
+      name: "User Stats",
+      component: UserStats,
       meta: { requiresAuth: true },
     },
     {
