@@ -92,14 +92,36 @@ function rollGacha(list) {
   }
 }
 function addToTank(selectedItem) {
-  const fish = {
-    ...selectedItem,
-    position: {
-      top: `${Math.random() * 60 + 10}%`,
-      left: `${Math.random() * 80 + 5}%`,
-    },
-    size: Math.floor(Math.random() * 75) + 50,
-  };
+  let fish;
+  if (selectedItem.type === "swimmer") {
+    fish = {
+      ...selectedItem,
+      position: {
+        top: `${Math.random() * 55 + 10}%`,
+        left: `${Math.random() * 80 + 10}%`,
+      },
+      size: Math.floor(Math.random()) + 50,
+    };
+  }
+  if (selectedItem.type === "walker") {
+    fish = {
+      ...selectedItem,
+      position: {
+        top: `${70}%`,
+        left: `${Math.random() * 80 + 10}%`,
+      },
+      size: Math.floor(Math.random()) + 50,
+    };
+  } else {
+    fish = {
+      ...selectedItem,
+      position: {
+        top: `${Math.random() * 55 + 10}%`,
+        left: `${Math.random() * 80 + 10}%`,
+      },
+      size: Math.floor(Math.random()) + 50,
+    };
+  }
   rolledItems.push(fish);
 }
 function closeSquare() {

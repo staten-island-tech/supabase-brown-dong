@@ -1,27 +1,30 @@
 <template>
-  <div>
-    <div><canvas id="ideeznuts" width="500" height="500"></canvas></div>
-    <div class="box"></div>
+  <div
+    class="absolute w-[80rem] h-[50rem] flex flex-col top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 justify-center items-center"
+  >
+    <div class="flex justify-around w-7/8">
+      <h1>Game Shop</h1>
+      <div>
+        <h1>Coin Flip</h1>
+      </div>
+      <div>
+        <h1>Blackjack</h1>
+      </div>
+    </div>
+    <div class="flex justify-around w-7/8">
+      <h1>Tank Shop</h1>
+      <div><h1>Level 2 Tank</h1></div>
+      <div><h1>Level 3 Tank</h1></div>
+      <div><h1>Level 4 Tank</h1></div>
+    </div>
+    <div class="flex justify-around w-7/8">
+      <h1>Egg Shop</h1>
+      <div><h1>Pokemon Egg</h1></div>
+      <div><h1>Legendary Egg</h1></div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
-let x = 0;
-function draw() {
-  const canvas = document.getElementById("ideeznuts");
-  const ctx = canvas.getContext("2d");
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.lineWidth = 5;
-  ctx.strokeStyle = "black";
-  ctx.fillStyle = "white";
-  ctx.fillRect(x, 200, 50, 50);
-  ctx.strokeRect(x, 200, 50, 50);
-  x += 2;
-  if (x > canvas.width) x = -50;
-  requestAnimationFrame(draw);
-}
-onMounted(() => {
-  draw();
-});
+//sessionStorage.setItem(level, 1);
 </script>
