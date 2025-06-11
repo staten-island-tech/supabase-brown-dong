@@ -26,5 +26,6 @@
 </template>
 
 <script setup>
+function tankLevel() {}
 //sessionStorage.setItem(level, 1);
 </script>
