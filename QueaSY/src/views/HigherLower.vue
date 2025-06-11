@@ -100,17 +100,11 @@ async function cashout() {
 
   endMessage.value = `You cashed out ${score.value * 10} dollars!`;
   let coinValue = score.value * 10;
-  console.log(userStore.coins);
   let moneyAmount = userStore.coins + coinValue;
-  console.log(moneyAmount);
-  // if (Number.isNaN(moneyAmount)) {
-  //   moneyAmount = 0;
-  // }
+
   await userStore.updateCoins(moneyAmount);
-  console.log(userStore.coins);
   hasfoenemcashedoutyet.value = true;
   alert(endMessage.value);
-
   setTimeout(() => {
     resetGame();
   }, 200);

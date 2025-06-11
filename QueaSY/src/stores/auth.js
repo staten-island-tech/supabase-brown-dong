@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { supabase } from "@/lib/supabase";
+import { useUserStore } from "./userStores";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref(null);
@@ -36,15 +37,21 @@ export const useAuthStore = defineStore("auth", () => {
     if (!error) user.value = data.user;
     else {
       authError.value = error;
-      alert(authError.message);
+      if (authError.value.message === "Invalid login credentials") {
+        alert("Incorrect username or password");
+      } else {
+        alert(authError.value.message);
+      }
     }
 
-    authError.value = null;
+    // authError.value = null;
   }
 
   async function signOut() {
     await supabase.auth.signOut();
     user.value = null;
+    const userStore = useUserStore();
+    userStore.coins = 0;
   }
 
   return {

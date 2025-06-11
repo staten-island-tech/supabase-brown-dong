@@ -19,7 +19,7 @@
             type="email"
             required
             placeholder="Email"
-            class="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
+            class="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
           />
         </div>
 
@@ -32,13 +32,13 @@
             type="password"
             required
             placeholder="Password"
-            class="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
+            class="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
           />
         </div>
 
         <button
           type="submit"
-          class="w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus:outline focus:outline-2 focus:outline-indigo-600"
+          class="w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus:outline-2 focus:outline-indigo-600"
         >
           Sign Up
         </button>
@@ -66,9 +66,9 @@ async function handleSignup() {
 
   if (auth.user) {
     console.log("Signup success!", auth.user);
+    router.push("/tank");
   } else {
     console.error("Signup failed:", auth.error);
-    router.push("/tank");
   }
 }
 </script>

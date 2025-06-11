@@ -65,7 +65,7 @@
       <h1 class="text-xl font-semibold">Create an Account</h1>
       <RouterLink
         to="/signup"
-        class="mt-2 inline-block rounded-md bg-pink-600 px-4 py-2 text-white font-semibold hover:bg-pink-500 focus:outline focus:outline-2 focus:outline-pink-400"
+        class="mt-2 inline-block rounded-md bg-pink-600 px-4 py-2 text-white font-semibold hover:bg-pink-500 focus:outline-2 focus:outline-pink-400"
       >
         sign up and prosper twin🌹
       </RouterLink>
@@ -85,11 +85,13 @@
 <script setup>
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth.js";
+import { useUserStore } from "@/stores/userStores.js";
 import { useRouter } from "vue-router";
 
 const email = ref("");
 const password = ref("");
 const auth = useAuthStore();
+const userStore = useUserStore();
 const router = useRouter();
 
 async function handleSignIn() {
@@ -97,9 +99,10 @@ async function handleSignIn() {
 
   if (auth.user) {
     console.log("you logged in twin", auth.user);
+    await userStore.loadUserData();
     router.push("/tank");
   } else {
-    console.error("ts login so kevin", auth.error);
+    console.error("ts signin so kevin:", auth.authError.message);
   }
 }
 async function handleSignOut() {
