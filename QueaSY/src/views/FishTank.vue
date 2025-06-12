@@ -90,7 +90,8 @@ onMounted(async () => {
 
         return {
           ...fish,
-          animation: fullFishData.animation,
+          animation: fullFishData?.animation || [],
+          type: fullFishData?.type || fish.type,
         };
       });
       console.log("Mapped rolledItems with animations:", fishStore.rolledItems);
@@ -167,25 +168,27 @@ function getPositionStyle(fish) {
 }
 
 function fishPosition(fishArray) {
-  if (fishArray.type === "walker") {
-    return fishArray.map((fish) => ({
-      ...fish,
-      position: {
-        top: `${70}%`,
-        left: `${Math.random() * 60 + 10}%`,
-      },
-      size: Math.floor(Math.random() * 40) + 50,
-    }));
-  } else {
-    return fishArray.map((fish) => ({
-      ...fish,
-      position: {
-        top: `${Math.random() * 55 + 10}%`,
-        left: `${Math.random() * 60 + 10}%`,
-      },
-      size: Math.floor(Math.random()) + 50,
-    }));
-  }
+  return fishArray.map((fish) => {
+    if (fish.type === "walker") {
+      return {
+        ...fish,
+        position: {
+          top: `70%`,
+          left: `${Math.random() * 60 + 10}%`,
+        },
+        size: Math.floor(Math.random() * 40) + 50,
+      };
+    } else {
+      return {
+        ...fish,
+        position: {
+          top: `${Math.random() * 55 + 10}%`,
+          left: `${Math.random() * 60 + 10}%`,
+        },
+        size: Math.floor(Math.random()) + 50,
+      };
+    }
+  });
 }
 </script>
 
