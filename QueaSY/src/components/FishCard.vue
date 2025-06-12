@@ -10,7 +10,8 @@
         <img
           :src="`/${currentSrc}`"
           :alt="fish.name"
-          class="w-24 h-24 object-contain"
+          class="w-24 h-24 object-contain transition-transform duration-300"
+          :style="fishTransformStyle"
         />
       </div>
       <div v-if="removeMode" class="flex items-center justify-between mt-2">
@@ -43,12 +44,16 @@ const props = defineProps({
 });
 // Bounce movement variables
 const posX = ref(10);
-const direction = ref(1); // 1 = right, -1 = left
+const direction = ref(1);
+const flipped = ref(true);
 const speed = 2;
 let animationFrame = null;
 const isPaused = ref(false);
 const pauseDuration = 500; // milliseconds
 let pauseTimeout = null;
+const fishTransformStyle = ref({
+  transform: "scaleX(-1)", // start facing right
+});
 
 function bounce() {
   if (isPaused.value) {
@@ -57,29 +62,37 @@ function bounce() {
   }
 
   if (posX.value >= maxPosX && !isPaused.value) {
-    posX.value = maxPosX; // clamp
+    posX.value = maxPosX;
     isPaused.value = true;
 
     if (!pauseTimeout) {
       pauseTimeout = setTimeout(() => {
         direction.value = -1;
-        posX.value = maxPosX - speed; // Move away from boundary after pause
+        flipped.value = true;
+
+        // Flip to face left
+        fishTransformStyle.value.transform = "scaleX(1)";
+
+        posX.value = maxPosX - speed;
         isPaused.value = false;
         pauseTimeout = null;
-        console.log("Pause ended, flipping direction to left");
       }, pauseDuration);
     }
   } else if (posX.value <= 0 && !isPaused.value) {
-    posX.value = 0; // clamp
+    posX.value = 0;
     isPaused.value = true;
 
     if (!pauseTimeout) {
       pauseTimeout = setTimeout(() => {
         direction.value = 1;
-        posX.value = speed; // Move away from boundary after pause
+        flipped.value = false;
+
+        // Flip to face right
+        fishTransformStyle.value.transform = "scaleX(-1)";
+
+        posX.value = speed;
         isPaused.value = false;
         pauseTimeout = null;
-        console.log("Pause ended, flipping direction to right");
       }, pauseDuration);
     }
   } else {
