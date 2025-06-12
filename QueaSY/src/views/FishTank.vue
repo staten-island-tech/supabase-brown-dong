@@ -39,7 +39,7 @@
           >
             <div class="bg-blue-400 p-6 rounded-lg shadow-xl w-80 text-center">
               <h2 class="text-lg font-semibold mb-4">
-                You got: {{ result.name }}!
+                You got a {{ result.rarity }}: {{ result.name }}!
               </h2>
               <img
                 :src="result.image"
@@ -193,6 +193,16 @@ async function rollGacha(list) {
   }
 
   if (selected) {
+    if (selected.chance >= 50) {
+      selected.rarity = "Common";
+    } else if (selected.chance >= 30) {
+      selected.rarity = "Uncommon";
+    } else if (selected.chance >= 20) {
+      selected.rarity = "Rare";
+    } else if (selected.chance >= 8) {
+      selected.rarity = "Epic";
+    }
+    console.log(selected.rarity);
     await fishStore.addFish(selected); // this saves and updates store
     result.value = selected;
     const {

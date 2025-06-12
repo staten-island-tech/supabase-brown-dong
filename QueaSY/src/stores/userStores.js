@@ -17,7 +17,7 @@ export const useUserStore = defineStore("user", () => {
 
     const { data, error } = await supabase
       .from("Users")
-      .select("coins")
+      .select("coins, email")
       .eq("user_id", user.id) // makes sure that supabases user_id is equal to to user.id, which is provided through the getUser
       // data -> user -> like everything under the sun basically theres so much stuff under its "details"
       .single();
@@ -29,6 +29,7 @@ export const useUserStore = defineStore("user", () => {
       console.log("Coins from Supabase:", data?.coins);
 
       coins.value = data.coins; // makes the current value of the coins on the website = the value of coins in data
+      currentUser.value.email = data.email;
     }
     return user;
   }
