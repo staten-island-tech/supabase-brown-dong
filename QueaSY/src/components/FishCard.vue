@@ -42,21 +42,35 @@ const props = defineProps({
   isSelected: Boolean,
 });
 // Bounce movement variables
-const posX = ref(0);
+const posX = ref(10);
 const direction = ref(1); // 1 = right, -1 = left
 const speed = 2;
 let animationFrame = null;
+const isPaused = ref(false);
+const pauseDuration = 500; // milliseconds
 
 function bounce() {
-  console.log("Bouncing...", posX.value); // ✅ ADD THIS
-  posX.value += direction.value * speed;
+  if (isPaused.value) {
+    animationFrame = requestAnimationFrame(bounce);
+    return;
+  }
 
-  if (posX.value >= maxPosX) {
-    posX.value = maxPosX;
-    direction.value = -1;
+  if (posX.value >= 140) {
+    isPaused.value = true;
+    setTimeout(() => {
+      console.log("Pause ended, flipping direction");
+      direction.value = -1;
+      isPaused.value = false;
+    }, pauseDuration);
   } else if (posX.value <= 0) {
-    posX.value = 0;
-    direction.value = 1;
+    isPaused.value = true;
+    setTimeout(() => {
+      console.log("Pause ended, flipping direction");
+      direction.value = 1;
+      isPaused.value = false;
+    }, pauseDuration);
+  } else {
+    posX.value += direction.value * speed;
   }
 
   animationFrame = requestAnimationFrame(bounce);
