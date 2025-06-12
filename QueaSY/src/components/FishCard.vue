@@ -68,6 +68,7 @@ function bounce() {
       if (!pauseTimeout) {
         pauseTimeout = setTimeout(() => {
           directionY.value = -1;
+          posY.value = maxPosY - speed;
           isPaused.value = false;
           pauseTimeout = null;
         }, pauseDuration);
@@ -78,6 +79,7 @@ function bounce() {
       if (!pauseTimeout) {
         pauseTimeout = setTimeout(() => {
           directionY.value = 1;
+          posY.value = speed;
           isPaused.value = false;
           pauseTimeout = null;
         }, pauseDuration);
