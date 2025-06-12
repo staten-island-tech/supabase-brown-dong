@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="p-4 rounded-lg w-[200px] h-[100px] overflow-hidden relative">
+    <div class="p-4 rounded-lg w-[300px] h-[100px] overflow-hidden relative">
       <div
         class="absolute"
         :style="{
@@ -31,7 +31,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 const currentSrc = ref("");
 let frame = 0;
 const selected = ref(false);
-const containerWidth = 200;
+const containerWidth = 300;
 const fishWidth = 96;
 const maxPosX = containerWidth - fishWidth;
 
@@ -48,6 +48,7 @@ const speed = 2;
 let animationFrame = null;
 const isPaused = ref(false);
 const pauseDuration = 500; // milliseconds
+let pauseTimeout = null;
 
 function bounce() {
   if (isPaused.value) {
@@ -55,22 +56,35 @@ function bounce() {
     return;
   }
 
-  if (posX.value >= 140) {
+  if (posX.value >= maxPosX && !isPaused.value) {
+    posX.value = maxPosX; // clamp
     isPaused.value = true;
-    setTimeout(() => {
-      console.log("Pause ended, flipping direction");
-      direction.value = -1;
-      isPaused.value = false;
-    }, pauseDuration);
-  } else if (posX.value <= 0) {
+
+    if (!pauseTimeout) {
+      pauseTimeout = setTimeout(() => {
+        direction.value = -1;
+        posX.value = maxPosX - speed; // Move away from boundary after pause
+        isPaused.value = false;
+        pauseTimeout = null;
+        console.log("Pause ended, flipping direction to left");
+      }, pauseDuration);
+    }
+  } else if (posX.value <= 0 && !isPaused.value) {
+    posX.value = 0; // clamp
     isPaused.value = true;
-    setTimeout(() => {
-      console.log("Pause ended, flipping direction");
-      direction.value = 1;
-      isPaused.value = false;
-    }, pauseDuration);
+
+    if (!pauseTimeout) {
+      pauseTimeout = setTimeout(() => {
+        direction.value = 1;
+        posX.value = speed; // Move away from boundary after pause
+        isPaused.value = false;
+        pauseTimeout = null;
+        console.log("Pause ended, flipping direction to right");
+      }, pauseDuration);
+    }
   } else {
     posX.value += direction.value * speed;
+    console.log("Moving posX to", posX.value);
   }
 
   animationFrame = requestAnimationFrame(bounce);

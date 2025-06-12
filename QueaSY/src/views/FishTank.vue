@@ -227,7 +227,7 @@ function fishPosition(fishArray) {
       ...fish,
       position: {
         top: `${70}%`,
-        left: `${Math.random() * 80 + 10}%`,
+        left: `${Math.random() * 60 + 10}%`,
       },
       size: Math.floor(Math.random() * 40) + 50,
     }));
@@ -236,7 +236,7 @@ function fishPosition(fishArray) {
       ...fish,
       position: {
         top: `${Math.random() * 55 + 10}%`,
-        left: `${Math.random() * 80 + 10}%`,
+        left: `${Math.random() * 60 + 10}%`,
       },
       size: Math.floor(Math.random()) + 50,
     }));
