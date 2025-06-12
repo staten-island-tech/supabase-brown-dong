@@ -1,12 +1,18 @@
 <template>
   <div>
-    <div class="p-4 rounded-lg w-40">
-      <img
-        :src="`/${currentSrc}`"
-        :alt="fish.name"
-        class="w-24 h-24 object-contain mx-auto"
-      />
-
+    <div class="p-4 rounded-lg w-[200px] h-[100px] overflow-hidden relative">
+      <div
+        class="absolute"
+        :style="{
+          transform: `translateX(${posX}px)`,
+        }"
+      >
+        <img
+          :src="`/${currentSrc}`"
+          :alt="fish.name"
+          class="w-24 h-24 object-contain"
+        />
+      </div>
       <div v-if="removeMode" class="flex items-center justify-between mt-2">
         <p class="text-center">slime out {{ fish.name }} 💔🔨</p>
         <input
@@ -21,22 +27,36 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 const currentSrc = ref("");
 let frame = 0;
 const selected = ref(false);
+
 const props = defineProps({
   fish: Object,
   imgSrcs: Array,
   removeMode: Boolean,
   isSelected: Boolean,
 });
+// Bounce movement variables
+const posX = ref(0);
+const direction = ref(1); // 1 = right, -1 = left
+const speed = 2;
+let animationFrame = null;
+
+function bounce() {
+  console.log("Bouncing...", posX.value); // ✅ ADD THIS
+  // Update position first
+  posX.value += direction.value * speed;
+
+  // Then bounce off walls
+  if (posX.value >= 140 || posX.value <= 0) {
+    direction.value *= -1;
+  }
+
+  animationFrame = requestAnimationFrame(bounce);
+}
 onMounted(() => {
-  console.log(
-    "Fish animation inside FishCard:",
-    props.fish.name,
-    props.imgSrcs
-  );
   if (!props.imgSrcs || props.imgSrcs.length === 0) {
     console.warn(`FishCard missing imgSrcs for ${props.fish.name}`);
     return;
@@ -47,9 +67,12 @@ onMounted(() => {
   setInterval(() => {
     frame = (frame + 1) % props.imgSrcs.length;
     currentSrc.value = props.imgSrcs[frame];
-  }, 200);
+  }, 500);
+  bounce(); // start movement
 });
-
+onUnmounted(() => {
+  cancelAnimationFrame(animationFrame);
+});
 const emit = defineEmits(["selectedfishtobeslimed"]);
 
 function selectToSlime(event) {
