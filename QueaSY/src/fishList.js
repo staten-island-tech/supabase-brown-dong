@@ -7,7 +7,14 @@ export const fishList = [
     animation: ["WAIdle.png", "WAMove1.png"],
     codename: "WA",
   },
-  { name: "Magikarp", chance: 25, type: "swimmer", image: "Magikarp.png" },
+  {
+    name: "Magikarp",
+    chance: 25,
+    type: "swimmer",
+    image: "Magikarp.png",
+    animation: ["MKIdle.png, MKMove1.png"],
+    codename: "MK",
+  },
   {
     name: "Blue Pikmin",
     chance: 20,
