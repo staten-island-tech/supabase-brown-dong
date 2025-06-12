@@ -22,6 +22,7 @@ export const useFishStore = defineStore("fishStore", () => {
         name: match?.name || f.species, // fallback to species
         image: match?.image || "default.png",
         chance: match?.chance || 0,
+        rarity: match?.rarity,
       };
     });
   }
@@ -80,5 +81,6 @@ export const useFishStore = defineStore("fishStore", () => {
     fetchUserFish,
     addFish,
     removeFish,
+    decorateUserFish,
   };
 });

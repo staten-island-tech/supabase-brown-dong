@@ -1,6 +1,5 @@
 <template>
-  <div class="w-full h-full relative">
-    <!-- Loading Screen -->
+  <div class="w-150 h-[100rem]">
     <div
       v-if="loading"
       class="fixed inset-0 flex items-center justify-center z-50 bg-white"
@@ -12,17 +11,16 @@
       />
     </div>
 
-    <!-- Stats View -->
     <div
-      v-if="!loading"
-      class="max-w-screen-xl mx-auto p-6 flex flex-col items-center"
+      v-if="loading === false"
+      class="absolute w-[80rem] h-[50rem] flex flex-col top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 justify-center items-center"
     >
       <h1 class="text-3xl font-bold mb-6">🐠 Your Fish Stats 🐠</h1>
 
       <div
         class="grid grid-cols-3 gap-4 w-full max-h-[60vh] overflow-y-auto bg-blue-100 p-4 rounded-lg shadow-inner"
       >
-        <FishCard
+        <UserStatsCard
           v-for="fish in fishStore.rolledItems"
           :key="fish.id || fish.name"
           :fish="fish"
@@ -32,23 +30,23 @@
         />
       </div>
 
-      <!-- Slime Controls -->
-      <div class="mt-6 flex flex-col items-center space-y-4">
+      <div class="mt-6 flex flex-row items-center space-y-4">
         <div>
           <button
             v-if="!removeMode"
             style="background-image: url('/remove.jpg')"
-            @click="removeMode = true"
+            @click="
+              removeMode = !removeMode;
+              console.log(removeMode);
+            "
             class="w-[150px] h-[50px] bg-no-repeat bg-center bg-contain border-none cursor-pointer"
           ></button>
-
           <button
             v-if="removeMode"
             style="background-image: url('/cancel.jpg')"
             @click="cancelSliming"
             class="w-[150px] h-[50px] bg-no-repeat bg-center bg-contain border-none cursor-pointer"
           ></button>
-
           <p class="mt-2 text-center">
             {{
               removeMode
@@ -57,8 +55,7 @@
             }}
           </p>
         </div>
-
-        <div v-if="removeMode && selectedForSlimingOut.length > 0">
+        <div v-if="removeMode && selectedForSlimingOut.length > 0" class="mt-4">
           <button
             @click="confirmRemoval"
             class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
@@ -76,7 +73,7 @@ import { onMounted, ref } from "vue";
 import { useFishStore } from "@/stores/fishStores";
 import { useUserStore } from "@/stores/userStores";
 import { supabase } from "@/lib/supabase";
-import FishCard from "@/components/FishCard.vue";
+import UserStatsCard from "@/components/UserStatsCard.vue";
 
 const fishStore = useFishStore();
 const userStore = useUserStore();

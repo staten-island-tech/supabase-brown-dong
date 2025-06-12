@@ -40,7 +40,7 @@
           >
             <div class="bg-blue-400 p-6 rounded-lg shadow-xl w-80 text-center">
               <h2 class="text-lg font-semibold mb-4">
-                You got: {{ result.name }}!
+                You got a {{ result.rarity }}: {{ result.name }}!
               </h2>
               <img
                 :src="result.image"
@@ -191,6 +191,16 @@ async function rollGacha(list) {
   if (selectedItem) {
     await fishStore.addFish(selectedItem); // this saves and updates store
     result.value = selectedItem;
+    if (selectedItem.chance >= 40) {
+      selectedItem.rarity = "Common";
+    } else if (selectedItem.chance >= 30) {
+      selectedItem.rarity = "Uncommon";
+    } else if (selectedItem.chance >= 20) {
+      selectedItem.rarity = "Rare";
+    } else if (selectedItem.chance >= 8) {
+      selectedItem.rarity = "Epic";
+    }
+    console.log(selectedItem.rarity);
     const {
       data: { user },
     } = await supabase.auth.getUser();

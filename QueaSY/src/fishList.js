@@ -4,14 +4,35 @@ export const fishList = [
     chance: 40,
     type: "swimmer",
     image: "WhiteAxolotl.png",
+    rarity: "Common",
   },
-  { name: "Magikarp", chance: 25, type: "swimmer", image: "Magikarp.png" },
-  { name: "Blue Pikmin", chance: 20, type: "walker", image: "BluePikmin.png" },
-  { name: "Poliwhirl", chance: 10, type: "swimmer", image: "Poliwhirl.png" },
+  {
+    name: "Magikarp",
+    chance: 30,
+    type: "swimmer",
+    image: "Magikarp.png",
+    rarity: "Common",
+  },
+  {
+    name: "Blue Pikmin",
+    chance: 20,
+    type: "walker",
+    image: "BluePikmin.png",
+    rarity: "Uncommon",
+  },
+  {
+    name: "Poliwhirl",
+    chance: 10,
+    type: "swimmer",
+    image: "Poliwhirl.png",
+    rarity: "Rare",
+  },
   {
     name: "Spongebob Banana",
     chance: 5,
     type: "floater",
     image: "SpongebobBanana.png",
+
+    rarity: "Epic",
   },
 ];
