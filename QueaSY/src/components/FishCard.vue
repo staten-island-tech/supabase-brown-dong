@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div class="p-4 rounded-lg w-[300px] h-[100px] overflow-hidden relative">
+    <div class="p-4 rounded-lg w-[300px] h-[200px] overflow-hidden relative">
       <div
         class="absolute"
         :style="{
-          transform: `translateX(${posX}px)`,
+          transform: isVerticalOnly
+            ? `translateY(${posY}px)`
+            : `translateX(${posX}px)`,
         }"
       >
         <img
@@ -14,46 +16,44 @@
           :style="fishTransformStyle"
         />
       </div>
-      <div v-if="removeMode" class="flex items-center justify-between mt-2">
-        <p class="text-center">slime out {{ fish.name }} 💔🔨</p>
-        <input
-          type="checkbox"
-          v-model="selected"
-          @change="selectToSlime"
-          class="cursor-pointer w-6 h-6 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-const currentSrc = ref("");
-let frame = 0;
-const selected = ref(false);
-const containerWidth = 300;
-const fishWidth = 96;
-const maxPosX = containerWidth - fishWidth;
 
 const props = defineProps({
   fish: Object,
   imgSrcs: Array,
-  removeMode: Boolean,
-  isSelected: Boolean,
 });
-// Bounce movement variables
-const posX = ref(10);
-const direction = ref(1);
-const flipped = ref(true);
+
+const containerWidth = 300;
+const containerHeight = 200; // Increased for visible vertical movement
+const fishWidth = 96;
+const fishHeight = 96;
+const maxPosX = containerWidth - fishWidth;
+const maxPosY = containerHeight - fishHeight;
+
+const posX = ref(0);
+const posY = ref(maxPosY / 2); // start roughly in middle vertically
+const directionX = ref(1);
+const directionY = ref(1);
 const speed = 2;
-let animationFrame = null;
+
 const isPaused = ref(false);
-const pauseDuration = 500; // milliseconds
+const pauseDuration = 500;
 let pauseTimeout = null;
+let animationFrame = null;
+
+const currentSrc = ref("");
+let frame = 0;
+
 const fishTransformStyle = ref({
-  transform: "scaleX(-1)", // start facing right
+  transform: "scaleX(-1)",
 });
+
+const isVerticalOnly = props.fish.name === "Spongebob Banana";
 
 function bounce() {
   if (isPaused.value) {
@@ -61,47 +61,66 @@ function bounce() {
     return;
   }
 
-  if (posX.value >= maxPosX && !isPaused.value) {
-    posX.value = maxPosX;
-    isPaused.value = true;
-
-    if (!pauseTimeout) {
-      pauseTimeout = setTimeout(() => {
-        direction.value = -1;
-        flipped.value = true;
-
-        // Flip to face left
-        fishTransformStyle.value.transform = "scaleX(1)";
-
-        posX.value = maxPosX - speed;
-        isPaused.value = false;
-        pauseTimeout = null;
-      }, pauseDuration);
-    }
-  } else if (posX.value <= 0 && !isPaused.value) {
-    posX.value = 0;
-    isPaused.value = true;
-
-    if (!pauseTimeout) {
-      pauseTimeout = setTimeout(() => {
-        direction.value = 1;
-        flipped.value = false;
-
-        // Flip to face right
-        fishTransformStyle.value.transform = "scaleX(-1)";
-
-        posX.value = speed;
-        isPaused.value = false;
-        pauseTimeout = null;
-      }, pauseDuration);
+  if (isVerticalOnly) {
+    if (posY.value >= maxPosY && !isPaused.value) {
+      posY.value = maxPosY;
+      isPaused.value = true;
+      if (!pauseTimeout) {
+        pauseTimeout = setTimeout(() => {
+          directionY.value = -1;
+          isPaused.value = false;
+          pauseTimeout = null;
+        }, pauseDuration);
+      }
+    } else if (posY.value <= 0 && !isPaused.value) {
+      posY.value = 0;
+      isPaused.value = true;
+      if (!pauseTimeout) {
+        pauseTimeout = setTimeout(() => {
+          directionY.value = 1;
+          isPaused.value = false;
+          pauseTimeout = null;
+        }, pauseDuration);
+      }
+    } else {
+      posY.value += directionY.value * speed;
     }
   } else {
-    posX.value += direction.value * speed;
-    console.log("Moving posX to", posX.value);
+    if (posX.value >= maxPosX && !isPaused.value) {
+      posX.value = maxPosX;
+      isPaused.value = true;
+      if (!pauseTimeout) {
+        pauseTimeout = setTimeout(() => {
+          directionX.value = -1;
+          fishTransformStyle.value.transform = "scaleX(1)";
+          posX.value = maxPosX - speed;
+          isPaused.value = false;
+          pauseTimeout = null;
+        }, pauseDuration);
+      }
+    } else if (posX.value <= 0 && !isPaused.value) {
+      posX.value = 0;
+      isPaused.value = true;
+      if (!pauseTimeout) {
+        pauseTimeout = setTimeout(() => {
+          directionX.value = 1;
+          fishTransformStyle.value.transform = "scaleX(-1)";
+          posX.value = speed;
+          isPaused.value = false;
+          pauseTimeout = null;
+        }, pauseDuration);
+      }
+    } else {
+      posX.value += directionX.value * speed;
+    }
   }
+
+  // Debug log
+  // console.log(`posY: ${posY.value}, posX: ${posX.value}`);
 
   animationFrame = requestAnimationFrame(bounce);
 }
+
 onMounted(() => {
   if (!props.imgSrcs || props.imgSrcs.length === 0) {
     console.warn(`FishCard missing imgSrcs for ${props.fish.name}`);
@@ -114,20 +133,12 @@ onMounted(() => {
     frame = (frame + 1) % props.imgSrcs.length;
     currentSrc.value = props.imgSrcs[frame];
   }, 500);
-  bounce(); // start movement
+
+  bounce();
 });
+
 onUnmounted(() => {
   cancelAnimationFrame(animationFrame);
+  if (pauseTimeout) clearTimeout(pauseTimeout);
 });
-const emit = defineEmits(["selectedfishtobeslimed"]);
-
-function selectToSlime(event) {
-  emit("selectedfishtobeslimed", {
-    fish: props.fish,
-    selected: event.target.checked,
-  });
-  console.log(props.fish.name + event.target.checked);
-}
 </script>
-
-<style scoped></style>

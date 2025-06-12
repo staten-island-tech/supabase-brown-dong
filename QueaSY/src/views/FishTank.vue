@@ -21,8 +21,6 @@
           v-for="fish in fishStore.rolledItems"
           :key="fish.id || fish.name"
           :fish="fish"
-          :removeMode="removeMode"
-          :isSelected="selectedForSlimingOut.some((f) => f.id === fish.id)"
           :imgSrcs="fish.animation || []"
           :style="getPositionStyle(fish)"
         />
