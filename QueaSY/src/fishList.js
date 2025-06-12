@@ -6,14 +6,16 @@ export const fishList = [
     image: "WhiteAxolotl.png",
     animation: ["WAIdle.png", "WAMove1.png"],
     codename: "WA",
+    rarity: "Common",
   },
   {
     name: "Magikarp",
-    chance: 25,
+    chance: 30,
     type: "swimmer",
     image: "Magikarp.png",
-    animation: ["MKIdle.png, MKMove1.png"],
+    animation: ["MKIdle.png", "MKMove1.png"],
     codename: "MK",
+    rarity: "Common",
   },
   {
     name: "Blue Pikmin",
@@ -22,6 +24,7 @@ export const fishList = [
     image: "BluePikmin.png",
     animation: ["BPIdle.png", "BPMove1.png"],
     codename: "BP",
+    rarity: "Uncommon",
   },
   {
     name: "Poliwhirl",
@@ -30,6 +33,7 @@ export const fishList = [
     image: "Poliwhirl.png",
     animation: ["PWIdle.png", "PWMove1.png"],
     codename: "BP",
+    rarity: "Rare",
   },
   {
     name: "Spongebob Banana",
@@ -37,7 +41,6 @@ export const fishList = [
     type: "floater",
     image: "SpongebobBanana.png",
     animation: ["SBIdle.png"],
-
     rarity: "Epic",
   },
 ];
