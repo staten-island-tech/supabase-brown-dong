@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="bg-white p-4 rounded-lg shadow-lg">
+    <div :id="fish.id" class="bg-white p-4 rounded-lg shadow-lg">
       <img
         :src="fish.image"
         :alt="fish.name"

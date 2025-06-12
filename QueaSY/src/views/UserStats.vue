@@ -18,7 +18,7 @@
       <h1 class="text-3xl font-bold mb-6">🐠 Your Fish Stats 🐠</h1>
 
       <div
-        class="grid grid-cols-3 gap-4 w-full max-h-[60vh] overflow-y-auto bg-blue-100 p-4 rounded-lg shadow-inner"
+        class="grid grid-cols-3 gap-4 w-full max-h-[75vh] overflow-y-auto bg-blue-100 p-4 rounded-lg shadow-inner"
       >
         <UserStatsCard
           v-for="fish in fishStore.rolledItems"
@@ -74,6 +74,7 @@ import { useFishStore } from "@/stores/fishStores";
 import { useUserStore } from "@/stores/userStores";
 import { supabase } from "@/lib/supabase";
 import UserStatsCard from "@/components/UserStatsCard.vue";
+import gsap from "gsap";
 
 const fishStore = useFishStore();
 const userStore = useUserStore();
@@ -117,9 +118,28 @@ function cancelSliming() {
 }
 
 async function confirmRemoval() {
+  const animationPromises = selectedForSlimingOut.value.map((fish) => {
+    const fishElement = document.getElementById(fish.id);
+
+    if (fishElement) {
+      return gsap.to(fishElement, {
+        scale: 10,
+        opacity: 0,
+        duration: 4,
+        ease: "back.in",
+        onComplete: () => {
+          fishElement.remove();
+        },
+      });
+    }
+  });
+
+  await Promise.all(animationPromises);
+
   for (const fish of selectedForSlimingOut.value) {
     await fishStore.removeFish(fish.id);
   }
+
   selectedForSlimingOut.value = [];
   removeMode.value = false;
 }

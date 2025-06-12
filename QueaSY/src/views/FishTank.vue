@@ -21,10 +21,7 @@
           v-for="fish in fishStore.rolledItems"
           :key="fish.id || fish.name"
           :fish="fish"
-          :removeMode="removeMode"
-          :isSelected="selectedForSlimingOut.some((f) => f.id === fish.id)"
           :style="getPositionStyle(fish)"
-          @selectedfishtobeslimed="toggleSwissCheesing"
         />
       </div>
       <div class="flex justify-around bg-blue-400 w-7/8">
@@ -56,57 +53,22 @@
             </div>
           </div>
         </div>
-        <div>
-          <button
-            v-if="!removeMode"
-            style="background-image: url('/remove.jpg')"
-            @click="
-              removeMode = !removeMode;
-              console.log(removeMode);
-            "
-            class="w-[150px] h-[50px] bg-no-repeat bg-center bg-contain border-none cursor-pointer"
-          ></button>
-          <button
-            v-if="removeMode"
-            style="background-image: url('/cancel.jpg')"
-            @click="cancelSliming"
-            class="w-[150px] h-[50px] bg-no-repeat bg-center bg-contain border-none cursor-pointer"
-          ></button>
-
-          <p class="mt-2 text-center">
-            {{
-              removeMode
-                ? "nvm dont slime them ❤️‍🩹"
-                : "SLIME THE FISH OUT👹👹👹👹👹 "
-            }}
-          </p>
-        </div>
-        <div v-if="removeMode && selectedForSlimingOut.length > 0" class="mt-4">
-          <button
-            @click="confirmRemoval"
-            class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-          >
-            Slime {{ selectedForSlimingOut.length }} Fish 🐟💀
-          </button>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, reactive, watch } from "vue";
+import { onMounted, ref, reactive } from "vue";
 import { fishList } from "@/fishList.js";
 import { useFishStore } from "@/stores/fishStores";
 import { useUserStore } from "@/stores/userStores";
 import { supabase } from "@/lib/supabase";
 import FishCard from "@/components/FishCard.vue";
-import { nextTick } from "vue";
 
 const fishStore = useFishStore();
 const userStore = useUserStore();
 const result = ref(null);
-let rolledItems = reactive([]);
 const loading = ref(true);
 
 onMounted(async () => {
@@ -120,48 +82,18 @@ onMounted(async () => {
       await fishStore.fetchUserFish(user.id);
       fishStore.rolledItems = fishPosition(fishStore.rolledItems);
     } else {
-      console.warn(
-        "yea yo user aint authenticated lil boy we cant fetch yo fish gang "
-      );
-      fishStore.rolledItems = null;
+      console.warn("User not authenticated.");
+      fishStore.rolledItems = [];
     }
   } finally {
     loading.value = false;
   }
 });
-const selectedForSlimingOut = ref([]);
-function toggleSwissCheesing({ fish, selected }) {
-  const exists = selectedForSlimingOut.value.some((f) => f.id === fish.id);
-  if (selected) {
-    selectedForSlimingOut.value.push(fish);
-  } else if (!selected && exists) {
-    const index = selectedForSlimingOut.value.findIndex(
-      (f) => f.id === fish.id
-    );
-    if (index !== -1) {
-      // -1 means it cant find anything matching
-      selectedForSlimingOut.value.splice(index, 1); // Modify array in place
-    }
-  }
-  console.log("Updated selection array:", selectedForSlimingOut.value);
-}
 
-function cancelSliming() {
-  removeMode.value = false;
-  selectedForSlimingOut.value = [];
-}
-
-async function confirmRemoval() {
-  for (const fish of selectedForSlimingOut.value) {
-    console.log(fish.fish_id);
-    await fishStore.removeFish(fish.fish_id);
-  }
-  selectedForSlimingOut.value = [];
-  fishStore.rolledItems = [...fishStore.rolledItems];
-}
 function closeSquare() {
   result.value = null;
 }
+
 function gachaCost() {
   if (userStore.coins >= 10) {
     userStore.updateCoins(userStore.coins - 10);
@@ -208,6 +140,7 @@ async function rollGacha(list) {
     fishStore.rolledItems = fishPosition(fishStore.rolledItems);
   }
 }
+
 function getPositionStyle(fish) {
   if (fish) {
     return {
@@ -219,25 +152,17 @@ function getPositionStyle(fish) {
     };
   }
 }
+
 function fishPosition(fishArray) {
-  if (fishArray.type === "walker") {
-    return fishArray.map((fish) => ({
-      ...fish,
-      position: {
-        top: `${70}%`,
-        left: `${Math.random() * 80 + 10}%`,
-      },
-      size: Math.floor(Math.random() * 40) + 50,
-    }));
-  } else {
-    return fishArray.map((fish) => ({
-      ...fish,
-      position: {
-        top: `${Math.random() * 55 + 10}%`,
-        left: `${Math.random() * 80 + 10}%`,
-      },
-      size: Math.floor(Math.random()) + 50,
-    }));
-  }
+  return fishArray.map((fish) => ({
+    ...fish,
+    position: {
+      top: `${Math.random() * 55 + 10}%`,
+      left: `${Math.random() * 80 + 10}%`,
+    },
+    size: Math.floor(Math.random()) + 50,
+  }));
 }
 </script>
+
+<style scoped></style>
