@@ -23,7 +23,7 @@
           :fish="fish"
           :removeMode="removeMode"
           :isSelected="selectedForSlimingOut.some((f) => f.id === fish.id)"
-          :imgSrc="fish.currentSrc"
+          :imgSrcs="fish.animation || []"
           :style="getPositionStyle(fish)"
           @selectedfishtobeslimed="toggleSwissCheesing"
         />
@@ -120,15 +120,17 @@ onMounted(async () => {
       userStore.currentUser = user;
       await fishStore.fetchUserFish(user.id);
       fishStore.rolledItems = fishPosition(fishStore.rolledItems);
-      fishStore.rolledItems = fishStore.rolledItems.map((fish) => ({
-        ...fish,
-        frameIndex: 0,
-        frameSources: [`${fish.codename}Idle.png`, `${fish.codename}Move1.png`],
-        currentSrc: "walk1.png",
-      }));
-      fishStore.rolledItems.forEach((fish) => {
-        animateFish(fish);
+      fishStore.rolledItems = fishStore.rolledItems.map((fish) => {
+        const fullFishData = fishList.find(
+          (f) => f.name === fish.name || f.id === fish.fish_id
+        );
+
+        return {
+          ...fish,
+          animation: fullFishData.animation,
+        };
       });
+      console.log("Mapped rolledItems with animations:", fishStore.rolledItems);
     } else {
       console.warn(
         "yea yo user aint authenticated lil boy we cant fetch yo fish gang "
@@ -239,11 +241,5 @@ function fishPosition(fishArray) {
       size: Math.floor(Math.random()) + 50,
     }));
   }
-}
-function animateFish(fish) {
-  setInterval(() => {
-    fish.frameIndex = (fish.frameIndex + 1) % fish.frameSources.length;
-    fish.currentSrc = fish.frameSources[fish.frameIndex];
-  }, 150); // Adjust speed as needed
 }
 </script>

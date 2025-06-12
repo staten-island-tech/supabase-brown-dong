@@ -4,6 +4,8 @@ export const fishList = [
     chance: 40,
     type: "swimmer",
     image: "WhiteAxolotl.png",
+    animation: ["WAIDle.png", "WAMove1.png"],
+    codename: "WA",
   },
   { name: "Magikarp", chance: 25, type: "swimmer", image: "Magikarp.png" },
   {
@@ -11,10 +13,17 @@ export const fishList = [
     chance: 20,
     type: "walker",
     image: "BluePikmin.png",
-    animation: ["BPIDle.png", "BPMove1"],
+    animation: ["BPIdle.png", "BPMove1.png"],
     codename: "BP",
   },
-  { name: "Poliwhirl", chance: 10, type: "swimmer", image: "Poliwhirl.png" },
+  {
+    name: "Poliwhirl",
+    chance: 10,
+    type: "swimmer",
+    image: "Poliwhirl.png",
+    animation: ["PWIDle.png", "PWMove1.png"],
+    codename: "BP",
+  },
   {
     name: "Spongebob Banana",
     chance: 5,

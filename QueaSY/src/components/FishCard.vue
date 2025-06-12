@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="bg-white p-4 rounded-lg shadow-lg w-40">
+    <div class="p-4 rounded-lg w-40">
       <img
-        :src="imgSrc"
+        :src="`/${currentSrc}`"
         :alt="fish.name"
         class="w-24 h-24 object-contain mx-auto"
       />
@@ -16,19 +16,38 @@
           class="cursor-pointer w-6 h-6 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <p v-else class="text-center mt-2">{{ fish.name }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-
+import { ref, onMounted } from "vue";
+const currentSrc = ref("");
+let frame = 0;
 const selected = ref(false);
 const props = defineProps({
   fish: Object,
+  imgSrcs: Array,
   removeMode: Boolean,
   isSelected: Boolean,
+});
+onMounted(() => {
+  console.log(
+    "Fish animation inside FishCard:",
+    props.fish.name,
+    props.imgSrcs
+  );
+  if (!props.imgSrcs || props.imgSrcs.length === 0) {
+    console.warn(`FishCard missing imgSrcs for ${props.fish.name}`);
+    return;
+  }
+
+  currentSrc.value = props.imgSrcs[0];
+
+  setInterval(() => {
+    frame = (frame + 1) % props.imgSrcs.length;
+    currentSrc.value = props.imgSrcs[frame];
+  }, 200);
 });
 
 const emit = defineEmits(["selectedfishtobeslimed"]);
@@ -40,15 +59,6 @@ function selectToSlime(event) {
   });
   console.log(props.fish.name + event.target.checked);
 }
-
-// watch(
-//   () => props.removeMode,
-//   (newVal) => {
-//     if (!newVal) {
-//       selected.value = false;
-//     }
-//   }
-// );
 </script>
 
 <style scoped></style>
