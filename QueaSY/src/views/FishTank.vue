@@ -21,6 +21,9 @@
           v-for="fish in fishStore.rolledItems"
           :key="fish.id || fish.name"
           :fish="fish"
+          :removeMode="removeMode"
+          :isSelected="selectedForSlimingOut.some((f) => f.id === fish.id)"
+          :imgSrcs="fish.animation || []"
           :style="getPositionStyle(fish)"
         />
       </div>
@@ -68,8 +71,9 @@ import FishCard from "@/components/FishCard.vue";
 
 const fishStore = useFishStore();
 const userStore = useUserStore();
-const result = ref(null);
 const loading = ref(true);
+const result = ref(null);
+let rolledItems = reactive([]);
 
 onMounted(async () => {
   try {
@@ -81,6 +85,17 @@ onMounted(async () => {
       userStore.currentUser = user;
       await fishStore.fetchUserFish(user.id);
       fishStore.rolledItems = fishPosition(fishStore.rolledItems);
+      fishStore.rolledItems = fishStore.rolledItems.map((fish) => {
+        const fullFishData = fishList.find(
+          (f) => f.name === fish.name || f.id === fish.fish_id
+        );
+
+        return {
+          ...fish,
+          animation: fullFishData.animation,
+        };
+      });
+      console.log("Mapped rolledItems with animations:", fishStore.rolledItems);
     } else {
       console.warn("User not authenticated.");
       fishStore.rolledItems = [];
@@ -154,14 +169,25 @@ function getPositionStyle(fish) {
 }
 
 function fishPosition(fishArray) {
-  return fishArray.map((fish) => ({
-    ...fish,
-    position: {
-      top: `${Math.random() * 55 + 10}%`,
-      left: `${Math.random() * 80 + 10}%`,
-    },
-    size: Math.floor(Math.random()) + 50,
-  }));
+  if (fishArray.type === "walker") {
+    return fishArray.map((fish) => ({
+      ...fish,
+      position: {
+        top: `${70}%`,
+        left: `${Math.random() * 60 + 10}%`,
+      },
+      size: Math.floor(Math.random() * 40) + 50,
+    }));
+  } else {
+    return fishArray.map((fish) => ({
+      ...fish,
+      position: {
+        top: `${Math.random() * 55 + 10}%`,
+        left: `${Math.random() * 60 + 10}%`,
+      },
+      size: Math.floor(Math.random()) + 50,
+    }));
+  }
 }
 </script>
 
