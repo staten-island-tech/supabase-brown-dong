@@ -23,6 +23,7 @@
           :fish="fish"
           :removeMode="removeMode"
           :isSelected="selectedForSlimingOut.some((f) => f.id === fish.id)"
+          :imgSrc="fish.currentSrc"
           :style="getPositionStyle(fish)"
           @selectedfishtobeslimed="toggleSwissCheesing"
         />
@@ -105,9 +106,9 @@ import { nextTick } from "vue";
 
 const fishStore = useFishStore();
 const userStore = useUserStore();
+const loading = ref(true);
 const result = ref(null);
 let rolledItems = reactive([]);
-const loading = ref(true);
 
 onMounted(async () => {
   try {
@@ -119,6 +120,15 @@ onMounted(async () => {
       userStore.currentUser = user;
       await fishStore.fetchUserFish(user.id);
       fishStore.rolledItems = fishPosition(fishStore.rolledItems);
+      fishStore.rolledItems = fishStore.rolledItems.map((fish) => ({
+        ...fish,
+        frameIndex: 0,
+        frameSources: [`${fish.codename}Idle.png`, `${fish.codename}Move1.png`],
+        currentSrc: "walk1.png",
+      }));
+      fishStore.rolledItems.forEach((fish) => {
+        animateFish(fish);
+      });
     } else {
       console.warn(
         "yea yo user aint authenticated lil boy we cant fetch yo fish gang "
@@ -229,5 +239,11 @@ function fishPosition(fishArray) {
       size: Math.floor(Math.random()) + 50,
     }));
   }
+}
+function animateFish(fish) {
+  setInterval(() => {
+    fish.frameIndex = (fish.frameIndex + 1) % fish.frameSources.length;
+    fish.currentSrc = fish.frameSources[fish.frameIndex];
+  }, 150); // Adjust speed as needed
 }
 </script>

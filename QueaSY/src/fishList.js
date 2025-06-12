@@ -11,7 +11,8 @@ export const fishList = [
     chance: 20,
     type: "walker",
     image: "BluePikmin.png",
-    animation: ["BPIDle.png", "BPWalk1"],
+    animation: ["BPIDle.png", "BPMove1"],
+    codename: "BP",
   },
   { name: "Poliwhirl", chance: 10, type: "swimmer", image: "Poliwhirl.png" },
   {

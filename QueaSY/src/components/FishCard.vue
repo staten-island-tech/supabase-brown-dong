@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="bg-white p-4 rounded-lg shadow-lg">
+    <div class="bg-white p-4 rounded-lg shadow-lg w-40">
       <img
-        :src="fish.image"
+        :src="imgSrc"
         :alt="fish.name"
         class="w-24 h-24 object-contain mx-auto"
       />
