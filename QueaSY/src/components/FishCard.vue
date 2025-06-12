@@ -31,6 +31,9 @@ import { ref, onMounted, onUnmounted } from "vue";
 const currentSrc = ref("");
 let frame = 0;
 const selected = ref(false);
+const containerWidth = 200;
+const fishWidth = 96;
+const maxPosX = containerWidth - fishWidth;
 
 const props = defineProps({
   fish: Object,
@@ -46,12 +49,14 @@ let animationFrame = null;
 
 function bounce() {
   console.log("Bouncing...", posX.value); // ✅ ADD THIS
-  // Update position first
   posX.value += direction.value * speed;
 
-  // Then bounce off walls
-  if (posX.value >= 140 || posX.value <= 0) {
-    direction.value *= -1;
+  if (posX.value >= maxPosX) {
+    posX.value = maxPosX;
+    direction.value = -1;
+  } else if (posX.value <= 0) {
+    posX.value = 0;
+    direction.value = 1;
   }
 
   animationFrame = requestAnimationFrame(bounce);
